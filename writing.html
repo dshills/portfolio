@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Articles — Davin Hills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08090a;--bg-2:#0b0d10;--surface:#101114;
+    --border:rgba(255,255,255,0.06);--border-strong:rgba(255,255,255,0.1);
+    --text:#f7f8f8;--text-muted:#8a8f98;--text-dim:#62666d;
+    --accent:#7b7ff6;--accent-2:#b78af8;--accent-3:#5e6ad2;--pink:#ec6cb9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"cv02","cv03","cv04","cv11"}
+  a{color:inherit;text-decoration:none}
+  body{overflow-x:hidden}
+
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.035;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode:overlay;
+  }
+  .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  .aurora::before,.aurora::after{content:"";position:absolute;border-radius:50%;filter:blur(140px);opacity:.4}
+  .aurora::before{width:560px;height:560px;top:-160px;right:-80px;background:radial-gradient(circle,#5e6ad2 0%,#7b7ff6 40%,transparent 70%)}
+  .aurora::after{width:520px;height:520px;top:420px;left:-220px;background:radial-gradient(circle,#ec6cb9 0%,#b78af8 40%,transparent 72%);opacity:.25}
+
+  header.nav{position:sticky;top:16px;z-index:50;margin:16px auto 0;max-width:1180px;padding:0 24px}
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 14px 10px 18px;border:1px solid var(--border);border-radius:999px;
+    background:rgba(12,13,16,0.6);backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-0.01em}
+  .brand .logo{width:22px;height:22px;border-radius:6px;background:conic-gradient(from 220deg at 50% 50%,#5e6ad2,#b78af8,#ec6cb9,#5e6ad2);box-shadow:0 0 0 1px rgba(255,255,255,0.06) inset,0 8px 24px rgba(94,106,210,.35)}
+  nav ul{display:flex;align-items:center;gap:6px;list-style:none}
+  nav a.link{padding:8px 12px;border-radius:999px;color:var(--text-muted);font-size:14px;transition:color .2s,background .2s}
+  nav a.link:hover,nav a.link.active{color:var(--text);background:rgba(255,255,255,0.04)}
+  .cta{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--text);color:#0b0c0f;font-weight:500;font-size:13.5px;transition:transform .15s,box-shadow .15s}
+  .cta:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(255,255,255,.08)}
+  .cta svg{width:14px;height:14px}
+
+  /* page header */
+  .page-hero{max-width:1180px;margin:0 auto;padding:100px 24px 60px}
+  .page-hero .kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:20px;display:inline-flex;gap:10px;align-items:center}
+  .page-hero .kicker::before{content:"";width:28px;height:1px;background:var(--text-dim)}
+  .page-hero h1{font-size:clamp(44px,7vw,84px);line-height:1.02;letter-spacing:-0.045em;font-weight:600;max-width:16ch}
+  .page-hero h1 .grad{background:linear-gradient(92deg,#fff 0%,#cdbffc 50%,#7b7ff6 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .page-hero .sub{margin-top:22px;color:var(--text-muted);max-width:60ch;font-size:17px;line-height:1.55}
+
+  /* toolbar: search + filters */
+  .toolbar{
+    max-width:1180px;margin:40px auto 0;padding:0 24px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  }
+  .search{
+    display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,0.02);
+    min-width:320px;flex:1;max-width:440px;color:var(--text-muted);
+  }
+  .search input{background:transparent;border:0;outline:0;color:var(--text);font-size:14px;width:100%;font-family:inherit}
+  .search input::placeholder{color:var(--text-dim)}
+  .search kbd{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);border:1px solid var(--border);padding:2px 6px;border-radius:4px}
+  .filters{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:7px 11px;border:1px solid var(--border);border-radius:999px;color:var(--text-muted);cursor:pointer;transition:all .2s}
+  .chip:hover{color:var(--text);border-color:var(--border-strong)}
+  .chip.active{color:var(--text);background:rgba(123,127,246,.12);border-color:rgba(123,127,246,.4)}
+
+  /* featured essay */
+  .featured{
+    max-width:1180px;margin:56px auto 0;padding:0 24px;
+  }
+  .feat-card{
+    position:relative;border:1px solid var(--border);border-radius:20px;overflow:hidden;
+    background:linear-gradient(135deg,rgba(94,106,210,0.12) 0%,rgba(236,108,185,0.04) 40%,rgba(8,9,10,0) 80%);
+    padding:44px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end;min-height:340px;
+    transition:transform .3s, border-color .3s;
+  }
+  .feat-card::before{
+    content:"";position:absolute;right:-80px;top:-80px;width:360px;height:360px;border-radius:50%;
+    background:radial-gradient(circle,rgba(183,138,248,.35),transparent 70%);filter:blur(30px);pointer-events:none;
+  }
+  .feat-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.12)}
+  .feat-tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;display:inline-flex;gap:8px;align-items:center;margin-bottom:18px}
+  .feat-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+  .feat-card h2{font-size:clamp(30px,3.4vw,46px);line-height:1.08;letter-spacing:-0.035em;font-weight:600;max-width:20ch}
+  .feat-card p{margin-top:18px;color:var(--text-muted);font-size:15.5px;line-height:1.6;max-width:52ch}
+  .feat-meta{position:relative;display:flex;flex-direction:column;gap:24px;align-items:flex-start;min-width:0}
+  .feat-meta .row{display:flex;gap:24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);letter-spacing:0.05em;text-transform:uppercase}
+  .feat-meta .row span{display:flex;flex-direction:column;gap:4px}
+  .feat-meta .row span b{color:var(--text);font-weight:500;font-size:13px;letter-spacing:0}
+  .feat-read{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;background:var(--text);color:#0b0c0f;font-weight:500;font-size:14px;transition:transform .15s}
+  .feat-read:hover{transform:translateY(-1px)}
+  .feat-read svg{width:14px;height:14px}
+
+  /* essay list */
+  .list{max-width:1180px;margin:80px auto 0;padding:0 24px}
+  .list-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .list-head .lbl{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase}
+  .list-head .count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim)}
+
+  .essay{
+    display:grid;grid-template-columns:100px 1fr 120px 80px;gap:32px;align-items:baseline;
+    padding:28px 4px;border-bottom:1px solid var(--border);cursor:pointer;transition:padding-left .2s;position:relative;
+  }
+  .essay::before{
+    content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(123,127,246,0.06),transparent 40%);
+    opacity:0;transition:opacity .3s;pointer-events:none;border-radius:12px;
+  }
+  .essay:hover::before{opacity:1}
+  .essay:hover{padding-left:16px}
+  .essay .date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);letter-spacing:0.05em}
+  .essay .title-wrap{min-width:0}
+  .essay h3{font-size:20px;line-height:1.25;letter-spacing:-0.02em;font-weight:500;transition:color .2s}
+  .essay p{margin-top:8px;color:var(--text-muted);font-size:14.5px;line-height:1.55;max-width:72ch}
+  .essay:hover h3{color:var(--accent-2)}
+  .essay .topic{font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:5px 10px;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);justify-self:start;align-self:center}
+  .essay .mins{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);justify-self:end;align-self:center}
+  .essay .arrow{opacity:0;transition:opacity .2s,transform .2s;color:var(--accent-2);font-family:'JetBrains Mono',monospace;font-size:13px}
+  .essay:hover .arrow{opacity:1;transform:translateX(4px)}
+
+  /* newsletter CTA */
+  .newsletter{
+    max-width:1180px;margin:100px auto 0;padding:0 24px;
+  }
+  .news-card{
+    border:1px solid var(--border);border-radius:20px;padding:48px;position:relative;overflow:hidden;
+    background:radial-gradient(ellipse at top right,rgba(94,106,210,.18),transparent 60%), rgba(255,255,255,0.02);
+    display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
+  }
+  .news-card h3{font-size:32px;letter-spacing:-0.03em;line-height:1.15;font-weight:600;max-width:22ch}
+  .news-card p{margin-top:12px;color:var(--text-muted);max-width:56ch;font-size:15px;line-height:1.55}
+  .news-form{display:flex;gap:10px;min-width:340px}
+  .news-form input{flex:1;background:rgba(8,9,10,0.8);border:1px solid var(--border-strong);border-radius:10px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s}
+  .news-form input:focus{border-color:rgba(123,127,246,.5)}
+  .news-form button{background:var(--text);color:#0b0c0f;border:0;border-radius:10px;padding:12px 18px;font-weight:500;font-family:inherit;font-size:14px;cursor:pointer;transition:transform .15s}
+  .news-form button:hover{transform:translateY(-1px)}
+
+  footer{
+    max-width:1180px;margin:80px auto 0;padding:40px 24px 60px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+    color:var(--text-dim);font-size:13px;border-top:1px solid var(--border);
+  }
+  footer a{color:var(--text-muted)}
+  footer a:hover{color:var(--text)}
+  footer ul{list-style:none;display:flex;gap:20px}
+
+  @media (max-width: 900px){
+    .feat-card{grid-template-columns:1fr;padding:32px}
+    .news-card{grid-template-columns:1fr}
+    .news-form{min-width:0}
+    .essay{grid-template-columns:1fr;gap:8px}
+    .essay .mins,.essay .arrow,.essay .topic{justify-self:flex-start}
+    nav ul li:nth-child(-n+3){display:none}
+  }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <span class="logo" aria-hidden="true"></span>
+      <span>Davin Hills</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a class="link" href="projects.html">Open Source</a></li>
+        <li><a class="link active" href="writing.html">Articles</a></li>
+        <li><a class="link" href="index.html#experience">Experience</a></li>
+        <li><a class="link" href="about.html">About</a></li>
+        <li>
+          <a class="cta" href="index.html#contact">
+            Get in touch
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="kicker">Articles · 10 published</div>
+  <h1>Writing on <span class="grad">AI, Go,</span> developer tools, and thirty years of shipping.</h1>
+  <p class="sub">I write the way I build — slowly, carefully, with a preference for the specific over the grand. Most of what lands here is about the LLM transition: where it actually works, where it doesn't, and how to tell the difference. Essays published on Medium.</p>
+</section>
+
+<div class="toolbar">
+  <label class="search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="search" placeholder="Search articles…" />
+    <kbd>⌘K</kbd>
+  </label>
+  <div class="filters">
+    <span class="chip active">All</span>
+    <span class="chip">AI</span>
+    <span class="chip">Claude</span>
+    <span class="chip">Developer Tools</span>
+    <span class="chip">MCP</span>
+    <span class="chip">LLM</span>
+    <span class="chip">Go</span>
+    <span class="chip">Editor</span>
+  </div>
+</div>
+
+<section class="featured">
+  <a href="https://dshills.medium.com/the-terminal-is-still-the-best-ide-building-an-ai-native-development-workflow-with-cli-tools-7adc645572ea" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+  <article class="feat-card">
+    <div>
+      <div class="feat-tag">Featured · Mar 04 2026</div>
+      <h2>The Terminal Is Still the Best IDE: Building an AI-Native Development Workflow with CLI Tools.</h2>
+      <p>Why the command line — not the chat window — is where AI-native development is actually happening. A walk through the tools, the workflows, and the reasons the terminal keeps winning.</p>
+    </div>
+    <div class="feat-meta">
+      <div class="row">
+        <span><b>AI</b>Topic</span>
+        <span><b>Medium</b>Published</span>
+        <span><b>Mar 04</b>2026</span>
+      </div>
+      <span class="feat-read">
+        Read on Medium
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M10 7h7v7"/></svg>
+      </span>
+    </div>
+  </article>
+  </a>
+</section>
+
+<section class="list">
+  <div class="list-head">
+    <span class="lbl">All articles</span>
+    <span class="count">9 shown · 1 featured above</span>
+  </div>
+
+  <a href="https://dshills.medium.com/why-i-stopped-letting-llms-see-everything-c8bf9ce0c209" target="_blank" rel="noopener" class="essay">
+    <span class="date">JAN 28 · 2026</span>
+    <div class="title-wrap">
+      <h3>Why I Stopped Letting LLMs See Everything</h3>
+      <p>A practical case for bounded context: what to hide from the model, what to show it, and why the default of "paste the whole repo" is the wrong one.</p>
+    </div>
+    <span class="topic">AI</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+
+  <a href="https://dshills.medium.com/stop-prompting-start-specifying-ff5a6f856797" target="_blank" rel="noopener" class="essay">
+    <span class="date">JAN 06 · 2026</span>
+    <div class="title-wrap">
+      <h3>Stop Prompting. Start Specifying.</h3>
+      <p>Treating specifications as formal contracts changes what LLMs can do for you. Notes from building specBuilder, speccritic, and plancritic.</p>
+    </div>
+    <span class="topic">Dev Tools</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+
+  <a href="https://dshills.medium.com/summoning-keystorm-an-editor-born-from-model-to-model-collaboration-56ede260c4c4" target="_blank" rel="noopener" class="essay">
+    <span class="date">DEC 06 · 2025</span>
+    <div class="title-wrap">
+      <h3>Summoning KeyStorm: An Editor Born From Model-to-Model Collaboration</h3>
+      <p>What happens when multiple frontier models design an editor together — and the surprising, specific tool that falls out the other side.</p>
+    </div>
+    <span class="topic">Editor</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+
+  <a href="https://dshills.medium.com/building-impossible-projects-with-ai-82baa588e8ed" target="_blank" rel="noopener" class="essay">
+    <span class="date">OCT 30 · 2025</span>
+    <div class="title-wrap">
+      <h3>Building Impossible Projects with AI</h3>
+      <p>On using Claude to take on the projects I would never have started alone — and the small set of habits that made the work actually ship.</p>
+    </div>
+    <span class="topic">Claude</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+
+  <a href="https://dshills.medium.com/building-an-mcp-code-review-server-in-go-using-official-sdks-011a6f63abc1" target="_blank" rel="noopener" class="essay">
+    <span class="date">OCT 08 · 2025</span>
+    <div class="title-wrap">
+      <h3>Building an MCP Code Review Server in Go Using Official SDKs</h3>
+      <p>A walkthrough of building an MCP server for LLM-driven code review — schema design, tool wiring, and the real-world gotchas the docs don't cover.</p>
+    </div>
+    <span class="topic">MCP Server</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+
+  <a href="https://dshills.medium.com/effective-go-development-with-claude-best-practices-for-ai-pair-programming-83fba0247a4f" target="_blank" rel="noopener" class="essay">
+    <span class="date">JUL 14 · 2025</span>
+    <div class="title-wrap">
+      <h3>Effective Go Development with Claude: Best Practices for AI Pair Programming</h3>
+      <p>A distilled set of patterns for using Claude as a Go pair programmer — what to delegate, what to own yourself, and where the handoff goes wrong.</p>
+    </div>
+    <span class="topic">Claude</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+
+  <a href="https://dshills.medium.com/how-i-built-a-high-performance-vector-database-in-go-without-writing-code-03c35d174fc8" target="_blank" rel="noopener" class="essay">
+    <span class="date">JUN 30 · 2025</span>
+    <div class="title-wrap">
+      <h3>How I Built a High-Performance Vector Database in Go Without Writing Code</h3>
+      <p>A lab notebook from the first wave of AI-native development — what Claude could actually build, what it couldn't, and what the end-to-end loop looked like.</p>
+    </div>
+    <span class="topic">Claude</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+
+  <a href="https://dshills.medium.com/programming-without-people-designing-a-language-for-llms-2192618d2540" target="_blank" rel="noopener" class="essay">
+    <span class="date">JUN 13 · 2025</span>
+    <div class="title-wrap">
+      <h3>Programming Without People: Designing a Language for LLMs</h3>
+      <p>If humans aren't the primary readers of the code, the language should know. A thought experiment that got less theoretical than I expected.</p>
+    </div>
+    <span class="topic">LLM</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+
+  <a href="https://dshills.medium.com/building-an-mcp-server-from-scratch-432f700b5e68" target="_blank" rel="noopener" class="essay">
+    <span class="date">APR 22 · 2025</span>
+    <div class="title-wrap">
+      <h3>Building an MCP Server from Scratch</h3>
+      <p>A from-first-principles walkthrough of MCP — the protocol, the transport, and what it actually takes to stand up a working server in Go.</p>
+    </div>
+    <span class="topic">Go</span>
+    <span class="mins">MEDIUM <span class="arrow">→</span></span>
+  </a>
+</section>
+
+<section class="newsletter">
+  <div class="news-card">
+    <div>
+      <h3>Follow the writing on Medium.</h3>
+      <p>New essays roughly monthly — on AI tooling, LLM infrastructure, Go, and the parts of the craft that survive the hype cycle.</p>
+    </div>
+    <a class="feat-read" href="https://dshills.medium.com" target="_blank" rel="noopener">
+      Follow on Medium
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M7 17L17 7M10 7h7v7"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Davin Hills — Hills Consulting, LLC</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="projects.html">Open Source</a></li>
+    <li><a href="index.html#experience">Experience</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>
