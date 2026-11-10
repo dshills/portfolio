@@ -1,541 +1,348 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Davin Hills — Building Intelligent Systems at Scale</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hills Consulting — Fractional CTO, architecture &amp; AI-native engineering</title>
+<meta name="description" content="Hills Consulting is the practice of Davin Hills: fractional CTO, architecture review, and AI-native engineering for teams building software that has to work. West Des Moines, Iowa.">
+<meta property="og:title" content="Hills Consulting — Know the ground before you build on it.">
+<meta property="og:description" content="Fractional CTO, architecture review, and AI-native engineering from Davin Hills. Thirty years of shipping software that had to work.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f0eadb">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #08090a;
-    --bg-2: #0b0d10;
-    --surface: #101114;
-    --border: rgba(255,255,255,0.06);
-    --border-strong: rgba(255,255,255,0.1);
-    --text: #f7f8f8;
-    --text-muted: #8a8f98;
-    --text-dim: #62666d;
-    --accent: #7b7ff6;
-    --accent-2: #b78af8;
-    --accent-3: #5e6ad2;
-    --pink: #ec6cb9;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"cv02","cv03","cv04","cv11"}
-  a{color:inherit;text-decoration:none}
-  body{overflow-x:hidden}
-
-  /* ambient grain */
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.035;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    mix-blend-mode:overlay;
-  }
-
-  /* aurora behind everything */
-  .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-  .aurora::before,
-  .aurora::after{
-    content:"";position:absolute;border-radius:50%;filter:blur(120px);opacity:.55;
-  }
-  .aurora::before{
-    width:680px;height:680px;top:-220px;right:-120px;
-    background:radial-gradient(circle at 30% 30%, #5e6ad2 0%, #7b7ff6 35%, transparent 70%);
-  }
-  .aurora::after{
-    width:540px;height:540px;top:240px;left:-180px;
-    background:radial-gradient(circle at 50% 50%, #ec6cb9 0%, #b78af8 40%, transparent 72%);
-    opacity:.35;
-  }
-
-  /* nav */
-  header.nav{
-    position:sticky;top:16px;z-index:50;margin:16px auto 0;max-width:1180px;padding:0 24px;
-  }
-  .nav-inner{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:10px 14px 10px 18px;border:1px solid var(--border);border-radius:999px;
-    background:rgba(12,13,16,0.6);backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
-  }
-  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-0.01em}
-  .brand .logo{
-    width:22px;height:22px;border-radius:6px;
-    background:conic-gradient(from 220deg at 50% 50%, #5e6ad2, #b78af8, #ec6cb9, #5e6ad2);
-    box-shadow:0 0 0 1px rgba(255,255,255,0.06) inset, 0 8px 24px rgba(94,106,210,.35);
-  }
-  nav ul{display:flex;align-items:center;gap:6px;list-style:none}
-  nav a.link{
-    padding:8px 12px;border-radius:999px;color:var(--text-muted);font-size:14px;transition:color .2s, background .2s;
-  }
-  nav a.link:hover{color:var(--text);background:rgba(255,255,255,0.04)}
-  .cta{
-    display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
-    background:var(--text);color:#0b0c0f;font-weight:500;font-size:13.5px;
-    transition:transform .15s ease, box-shadow .15s ease;
-  }
-  .cta:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(255,255,255,.08)}
-  .cta svg{width:14px;height:14px}
-
-  /* hero */
-  .hero{
-    max-width:1180px;margin:0 auto;padding:140px 24px 120px;position:relative;
-  }
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:10px;padding:6px 12px 6px 10px;
-    border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,0.02);
-    color:var(--text-muted);font-size:13px;margin-bottom:32px;
-  }
-  .eyebrow .dot{
-    width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 4px rgba(74,222,128,.15);
-    animation:pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(74,222,128,.15)}50%{box-shadow:0 0 0 8px rgba(74,222,128,.05)}}
-  h1.display{
-    font-size:clamp(48px, 8vw, 104px);line-height:0.98;letter-spacing:-0.045em;font-weight:600;
-    max-width:15ch;
-  }
-  .lede{
-    margin-top:28px;max-width:560px;color:var(--text-muted);font-size:19px;line-height:1.55;font-weight:400;
-  }
-  .hero-actions{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap}
-  .btn-ghost{
-    display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;
-    border:1px solid var(--border-strong);background:rgba(255,255,255,0.02);color:var(--text);font-size:14px;
-    transition:background .2s, border-color .2s;
-  }
-  .btn-ghost:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.18)}
-  .btn-solid{
-    display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;
-    background:linear-gradient(180deg, #ffffff 0%, #dddde0 100%);color:#0b0c0f;font-size:14px;font-weight:500;
-    box-shadow:0 1px 0 rgba(255,255,255,0.6) inset, 0 10px 30px rgba(255,255,255,0.08);
-    transition:transform .15s;
-  }
-  .btn-solid:hover{transform:translateY(-1px)}
-  .btn svg, .btn-ghost svg, .btn-solid svg{width:14px;height:14px}
-
-  /* metrics strip */
-  .metrics{
-    margin-top:88px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;
-    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  }
-  .metric{padding:22px 24px;border-right:1px solid var(--border)}
-  .metric:last-child{border-right:none}
-  .metric .num{font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:-0.02em;color:var(--text)}
-  .metric .lbl{margin-top:6px;font-size:13px;color:var(--text-dim);letter-spacing:0.02em;text-transform:uppercase}
-
-  /* section base */
-  section.band{max-width:1180px;margin:0 auto;padding:120px 24px;position:relative}
-  .section-head{display:flex;align-items:end;justify-content:space-between;gap:40px;margin-bottom:48px}
-  .section-head .kicker{
-    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:16px;
-  }
-  .section-head h2{font-size:44px;line-height:1.05;letter-spacing:-0.035em;font-weight:600;max-width:18ch}
-  .section-head .side{color:var(--text-muted);max-width:340px;font-size:15px;line-height:1.55}
-  .section-head a.more{color:var(--text-muted);font-size:14px;display:inline-flex;gap:6px;align-items:center}
-  .section-head a.more:hover{color:var(--text)}
-
-  /* writing grid */
-  .writing{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-  .write-card{
-    background:var(--bg);padding:28px 26px 26px;min-height:240px;display:flex;flex-direction:column;justify-content:space-between;
-    transition:background .3s ease;cursor:pointer;
-  }
-  .write-card:hover{background:#0d0f13}
-  .write-card .meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);letter-spacing:0.05em}
-  .write-card h3{font-size:22px;line-height:1.2;letter-spacing:-0.02em;font-weight:500;margin-top:20px}
-  .write-card p{margin-top:12px;color:var(--text-muted);font-size:14.5px;line-height:1.55}
-  .write-card .arrow{margin-top:20px;display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:13px;transition:color .2s}
-  .write-card:hover .arrow{color:var(--text)}
-
-  /* projects */
-  .projects{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-  .proj{
-    position:relative;border:1px solid var(--border);border-radius:16px;padding:28px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 60%);
-    transition:border-color .25s, transform .25s;overflow:hidden;
-  }
-  .proj::before{
-    content:"";position:absolute;inset:-1px;border-radius:16px;padding:1px;
-    background:linear-gradient(135deg, rgba(123,127,246,.35), rgba(236,108,185,.0) 40%);
-    -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
-    -webkit-mask-composite:xor;mask-composite:exclude;
-    opacity:0;transition:opacity .3s;pointer-events:none;
-  }
-  .proj:hover{transform:translateY(-2px)}
-  .proj:hover::before{opacity:1}
-  .proj-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-  .proj-name{display:flex;align-items:center;gap:10px;font-weight:500;letter-spacing:-0.01em}
-  .proj-name .sq{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#5e6ad2,#b78af8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-  .stars{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border:1px solid var(--border);border-radius:999px}
-  .proj p{color:var(--text-muted);font-size:14.5px;line-height:1.6;margin-bottom:22px}
-  .tags{display:flex;gap:6px;flex-wrap:wrap}
-  .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:4px 9px;border:1px solid var(--border);border-radius:6px;color:var(--text-muted)}
-
-  /* experience timeline */
-  .timeline{display:flex;flex-direction:column;border-left:1px solid var(--border);padding-left:24px;margin-left:4px}
-  .job{position:relative;padding:22px 0;border-bottom:1px dashed var(--border);display:grid;grid-template-columns:160px 1fr auto;gap:32px;align-items:baseline}
-  .job:last-child{border-bottom:none}
-  .job::before{content:"";position:absolute;left:-29px;top:30px;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(123,127,246,.15)}
-  .job .when{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text-dim);letter-spacing:0.04em}
-  .job .role{font-size:17px;font-weight:500;letter-spacing:-0.01em}
-  .job .co{color:var(--text-muted);font-size:14px;margin-top:4px}
-  .job .place{font-size:12.5px;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
-
-  /* CTA footer band */
-  .final{
-    max-width:1180px;margin:60px auto 0;padding:80px 24px;position:relative;text-align:center;
-    border-top:1px solid var(--border);
-  }
-  .final h3{font-size:clamp(36px,5vw,64px);letter-spacing:-0.04em;line-height:1.05;font-weight:600;max-width:18ch;margin:0 auto}
-  .final p{margin:18px auto 0;color:var(--text-muted);max-width:46ch;font-size:16px;line-height:1.55}
-  .final .row{margin-top:36px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
-  footer{
-    max-width:1180px;margin:0 auto;padding:40px 24px 60px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
-    color:var(--text-dim);font-size:13px;border-top:1px solid var(--border);
-  }
-  footer a{color:var(--text-muted)}
-  footer a:hover{color:var(--text)}
-  footer ul{list-style:none;display:flex;gap:20px}
-
-  /* ——— motion ——— */
-  @keyframes auroraDriftA{
-    0%,100%{transform:translate3d(0,0,0) scale(1)}
-    50%{transform:translate3d(50px,30px,0) scale(1.08)}
-  }
-  @keyframes auroraDriftB{
-    0%,100%{transform:translate3d(0,0,0) scale(1)}
-    50%{transform:translate3d(-40px,40px,0) scale(1.12)}
-  }
-  .aurora::before{animation:auroraDriftA 20s ease-in-out infinite}
-  .aurora::after{animation:auroraDriftB 26s ease-in-out infinite}
-
-  @keyframes logoSpin{to{transform:rotate(360deg)}}
-  .brand .logo{animation:logoSpin 16s linear infinite}
-
-  h1.display .grad{
-    background:linear-gradient(92deg,#ffffff 0%,#cdbffc 25%,#7b7ff6 50%,#cdbffc 75%,#ffffff 100%);
-    background-size:200% 100%;
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    animation:gradShimmer 9s linear infinite;
-  }
-  @keyframes gradShimmer{from{background-position:0% 50%}to{background-position:-200% 50%}}
-
-  @keyframes riseIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-  .hero .eyebrow,.hero h1.display,.hero .lede,.hero .hero-actions,.hero .metrics{
-    opacity:0;animation:riseIn .9s cubic-bezier(.2,.7,.2,1) forwards;
-  }
-  .hero .eyebrow{animation-delay:.05s}
-  .hero h1.display{animation-delay:.18s}
-  .hero .lede{animation-delay:.34s}
-  .hero .hero-actions{animation-delay:.50s}
-  .hero .metrics{animation-delay:.66s}
-
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
-  .reveal.in{opacity:1;transform:none}
-  .reveal-stagger > *{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1)}
-  .reveal-stagger.in > *{opacity:1;transform:none}
-  .reveal-stagger.in > *:nth-child(1){transition-delay:.05s}
-  .reveal-stagger.in > *:nth-child(2){transition-delay:.14s}
-  .reveal-stagger.in > *:nth-child(3){transition-delay:.23s}
-  .reveal-stagger.in > *:nth-child(4){transition-delay:.32s}
-  .reveal-stagger.in > *:nth-child(5){transition-delay:.41s}
-  .reveal-stagger.in > *:nth-child(6){transition-delay:.50s}
-  .reveal-stagger.in > *:nth-child(7){transition-delay:.59s}
-  .reveal-stagger.in > *:nth-child(8){transition-delay:.68s}
-
-  .proj{transition:border-color .25s,transform .25s,box-shadow .35s}
-  .proj:hover{box-shadow:0 24px 60px -24px rgba(123,127,246,.32)}
-
-  .btn-solid,.btn-ghost,.cta{position:relative;overflow:hidden}
-  .btn-solid::after,.cta::after{
-    content:"";position:absolute;inset:0;border-radius:inherit;
-    background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);
-    transform:translateX(-120%);transition:transform .6s ease;pointer-events:none;
-  }
-  .btn-solid:hover::after,.cta:hover::after{transform:translateX(120%)}
-
-  @media (prefers-reduced-motion: reduce){
-    *,*::before,*::after{animation:none!important;transition:none!important}
-    .hero .eyebrow,.hero h1.display,.hero .lede,.hero .hero-actions,.hero .metrics,
-    .reveal,.reveal-stagger > *{opacity:1!important;transform:none!important}
-  }
-
-  /* responsive */
-  @media (max-width: 900px){
-    .writing{grid-template-columns:1fr}
-    .projects{grid-template-columns:1fr}
-    .metrics{grid-template-columns:repeat(2,1fr)}
-    .metric:nth-child(2){border-right:none}
-    .section-head{flex-direction:column;align-items:flex-start}
-    .job{grid-template-columns:1fr;gap:6px}
-    .job .place{margin-top:4px}
-    nav ul li:nth-child(-n+3){display:none}
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=DM+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
-<div class="aurora"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-<header class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="brand">
-      <span class="logo" aria-hidden="true"></span>
-      <span>Davin Hills</span>
+<header class="collar">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Hills Consulting — home">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 18c0-8 6-14 14-14s12 5 12 12-6 13-14 13S3 25 3 18Z"/><path d="M8.5 17.5c0-5 3.7-8.5 8.6-8.5 4.6 0 7.4 3 7.4 7.2 0 4.6-3.8 7.8-8.4 7.8-4.4 0-7.6-2.3-7.6-6.5Z"/><path d="M13.3 16.8c0-2.3 1.8-3.8 4-3.8 2 0 3.4 1.4 3.4 3.2 0 2-1.7 3.4-3.8 3.4-2 0-3.6-1-3.6-2.8Z"/><circle cx="17" cy="16.4" r="1.7" fill="#e2431b" stroke="none"/></svg>
+      <span>Hills<br>Consulting</span>
     </a>
-    <nav>
-      <ul>
-        <li><a class="link" href="projects.html">Open Source</a></li>
-        <li><a class="link" href="writing.html">Articles</a></li>
-        <li><a class="link" href="#experience">Experience</a></li>
-        <li><a class="link" href="about.html">About</a></li>
-        <li>
-          <a class="cta" href="#contact">
-            Get in touch
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </li>
-      </ul>
+    <span class="sheet">Sheet 01 of 04 · Home</span>
+    <nav class="nav" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="projects.html">Open source</a>
+      <a href="writing.html">Writing</a>
+      <a href="about.html">About</a>
+      <a class="nav-cta" href="#contact">Contact</a>
     </nav>
   </div>
 </header>
 
+<main id="main">
+
+<!-- ═════════ HERO ═════════ -->
 <section class="hero">
-  <span class="eyebrow"><span class="dot"></span> West Des Moines, Iowa · Booking 2026</span>
-  <h1 class="display">
-    From MediNotes to Claude: thirty years of <span class="grad">shipping software</span> that matters.
-  </h1>
-  <p class="lede">
-    I've led engineering at healthcare-IT companies, held CTO roles at Alopex and BettrLife,
-    and now build open-source AI tooling — SpecCritic, PlanCritic, Prism —
-    for teams trying to make LLMs actually reliable.
-  </p>
-  <div class="hero-actions">
-    <a class="btn-solid" href="#opensource">
-      View open source
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </a>
-    <a class="btn-ghost" href="writing.html">
-      Read articles
-    </a>
-  </div>
+  <div class="wrap">
+    <div class="map-frame">
+      <div class="map fade-left" data-contours data-interactive data-seed="11" style="cursor:crosshair">
+        <canvas aria-hidden="true"></canvas>
+        <span class="coord tl">41°34′38″N</span>
+        <span class="coord tr">93°42′41″W</span>
+        <span class="coord bl">Hills Consulting, LLC · West Des Moines, Iowa</span>
+        <span class="coord br" data-elev aria-hidden="true">Elev <b>950</b> ft</span>
 
-  <div class="metrics" role="list">
-    <div class="metric"><div class="num">30+</div><div class="lbl">Years shipping</div></div>
-    <div class="metric"><div class="num">11</div><div class="lbl">Articles on Medium</div></div>
-    <div class="metric"><div class="num">40+</div><div class="lbl">Open source projects</div></div>
-    <div class="metric"><div class="num">03</div><div class="lbl">Industry awards</div></div>
+        <div class="map-body">
+          <p class="eyebrow"><i></i> Booking new engagements</p>
+          <h1>
+            <span class="line"><span>Know the ground</span></span>
+            <span class="line"><span>before you</span></span>
+            <span class="line"><span class="blaze">build on it.</span></span>
+          </h1>
+          <p class="lede">Hills Consulting is the practice of Davin Hills: thirty years of shipping software that had to work, most of it in healthcare, and an open-source toolchain for making AI-assisted development reliable enough to ship.</p>
+          <div class="actions">
+            <a class="btn" href="#contact">Start a conversation <span class="arrow">↗</span></a>
+            <a class="btn ghost" href="#route">See how I work</a>
+          </div>
+
+          <aside class="legend" aria-label="Services">
+            <h2><span>Legend</span><span>4 engagements</span></h2>
+            <ul>
+              <li><a href="#services">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3 21.5 20h-19Z"/><circle cx="12" cy="14.5" r="1.6" fill="#e2431b" stroke="none"/></svg>
+                Fractional CTO &amp; leadership <span class="arrow">→</span></a></li>
+              <li><a href="#services">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><path d="M12 1v5M12 18v5M1 12h5M18 12h5"/></svg>
+                Architecture &amp; HIPAA review <span class="arrow">→</span></a></li>
+              <li><a href="#services">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 19c4 0 3-6 7-6s3-8 11-8" stroke-dasharray="3 3"/><circle cx="3.5" cy="19" r="2" fill="currentColor"/><circle cx="20.5" cy="5" r="2" fill="#e2431b" stroke="none"/></svg>
+                AI-native engineering <span class="arrow">→</span></a></li>
+              <li><a href="#services">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/><rect x="2" y="2" width="20" height="20" stroke-dasharray="2 3"/></svg>
+                Advisory &amp; diligence <span class="arrow">→</span></a></li>
+            </ul>
+            <div class="scale" aria-hidden="true"><span>0</span><i></i><span>30 yrs</span></div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div><b>30+</b><span>Years shipping software</span></div>
+        <div><b>50+</b><span>Public repositories</span></div>
+        <div><b>13</b><span>Essays published</span></div>
+        <div><b>03</b><span>Industry awards</span></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="band" id="articles">
-  <div class="section-head reveal">
-    <div>
-      <div class="kicker">01 · Writing</div>
-      <h2>Essays on AI, developer tools, and the craft of shipping software.</h2>
+<!-- ═════════ PREMISE ═════════ -->
+<section class="section" id="premise">
+  <div class="wrap premise">
+    <blockquote class="reveal">The most expensive part of software is the part that’s wrong.</blockquote>
+    <div class="body reveal">
+      <p>That’s true with human teams. It’s triply true with LLM agents. So every engagement starts the same way: <strong>survey the terrain</strong>. The system as it actually runs, the team as it actually works, and the constraints nobody wrote down.</p>
+      <p>Then turn what you want into a contract, check the contract, and only then write the code. I work at every level of that, from writing production-grade code to leading engineering organizations, and I’ve spent the last few years making LLM-based development <strong>reliable enough to ship</strong>.</p>
     </div>
-    <a class="more" href="writing.html">All articles <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
-  <div class="writing reveal-stagger">
-    <a class="write-card" href="https://dshills.medium.com/i-built-five-gates-around-my-coding-agent-i-was-missing-the-sixth-d3579d101a4a" target="_blank" rel="noopener">
-      <div>
-        <div class="meta">APR 19 · 2026 · AGENTS</div>
+</section>
+
+<!-- ═════════ SERVICES ═════════ -->
+<section class="section tight" id="services">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker"><b>A</b> Services</p>
+      <h2>Four ways to <em>work together.</em></h2>
+    </header>
+
+    <div class="services reveal">
+      <article class="service">
+        <span class="no">01 / 04</span>
+        <svg class="sym" viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M23 5 43 40H3Z"/><path d="M23 17 34 36H12Z" stroke-dasharray="2 3"/><circle cx="23" cy="29" r="3" fill="#e2431b" stroke="none"/></svg>
+        <p class="label">Fractional CTO &amp; engineering leadership</p>
+        <h3>Embedded technical leadership.</h3>
+        <p>Hands-on CTO work for companies past product-market fit but facing the architectural, team, and delivery bends that come next. Recurring 1–3 day/week engagements: distributed teams, roadmap ownership, hiring, and the unglamorous work of turning ad-hoc engineering into a shippable practice.</p>
+      </article>
+      <article class="service">
+        <span class="no">02 / 04</span>
+        <svg class="sym" viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="23" cy="23" r="17"/><circle cx="23" cy="23" r="9"/><path d="M23 1v11M23 34v11M1 23h11M34 23h11"/><circle cx="23" cy="23" r="2.6" fill="#e2431b" stroke="none"/></svg>
+        <p class="label">Architecture review &amp; healthcare compliance</p>
+        <h3>Systems audits, with HIPAA receipts.</h3>
+        <p>Deep reviews of existing systems, cloud infrastructure, and team practices, grounded in two decades building HIPAA-compliant healthcare platforms (HL7, FHIR, EHR integrations). Particularly valuable before a migration, a platform rebuild, or a diligence round where the technical story has to hold up.</p>
+      </article>
+      <article class="service">
+        <span class="no">03 / 04</span>
+        <svg class="sym" viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 38c9 0 6-12 14-12s6-16 22-16" stroke-dasharray="4 4"/><circle cx="5.5" cy="38" r="3.4" fill="currentColor"/><circle cx="19" cy="26" r="3.4" fill="#f0eadb"/><circle cx="40.5" cy="10" r="3.6" fill="#e2431b" stroke="none"/></svg>
+        <p class="label">AI-native development &amp; LLM infrastructure</p>
+        <h3>From demo to production.</h3>
+        <p>Helping teams move from prototype LLM features to systems you’d actually ship: spec-first workflows, deterministic review, context budgets, evaluation, observability, cost. The working material behind my open-source toolchain and most of the writing.</p>
+      </article>
+      <article class="service">
+        <span class="no">04 / 04</span>
+        <svg class="sym" viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="4" width="38" height="38" stroke-dasharray="3 4"/><path d="M14 14 32 32M32 14 14 32" stroke="#e2431b" stroke-width="2.6"/></svg>
+        <p class="label">Advisory, diligence &amp; workshops</p>
+        <h3>Short engagements, specific questions.</h3>
+        <p>Board advisory, technical diligence for investors, and focused workshops on AI-native development for engineering teams. For when the question is narrow, the stakes are real, and the answer benefits from someone who’s been shipping software for thirty years and writing about the transition.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ ROUTE (toolchain) ═════════ -->
+<section class="section night" id="route" data-contours data-seed="29">
+  <canvas aria-hidden="true"></canvas>
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker"><b>B</b> The route · open-source toolchain</p>
+      <h2>A gate at <em>every turn.</em></h2>
+      <a class="more" href="projects.html">All open source <span class="arrow">↗</span></a>
+    </header>
+    <p class="sec-sub reveal">Every non-deterministic step in an agent workflow deserves a deterministic gate. These ten open-source tools are the gates I build with, and the working material behind most engagements.</p>
+
+    <ol class="route">
+      <li class="stop reveal">
+        <div class="marker">01</div>
+        <h3>Specify</h3>
+        <p>Turn the idea into a contract, then attack the contract. Contradictions, hidden assumptions, and missing prerequisites surface before a line of code is written.</p>
+        <div class="tools">
+          <a href="https://github.com/dshills/specBuilder" target="_blank" rel="noopener">specBuilder <span class="arrow">↗</span></a>
+          <a href="https://github.com/dshills/speccritic" target="_blank" rel="noopener">speccritic <span class="arrow">↗</span></a>
+        </div>
+      </li>
+      <li class="stop reveal">
+        <div class="marker">02</div>
+        <h3>Plan</h3>
+        <p>Review the implementation plan the same way: structured critique, ambiguities flagged, concrete patches returned.</p>
+        <div class="tools">
+          <a href="https://github.com/dshills/plancritic" target="_blank" rel="noopener">plancritic <span class="arrow">↗</span></a>
+        </div>
+      </li>
+      <li class="stop reveal">
+        <div class="marker">03</div>
+        <h3>Context</h3>
+        <p>Decide what the agent gets to see. Score, budget, and explain which files load, so context becomes a designed artifact instead of a guess.</p>
+        <div class="tools">
+          <a href="https://github.com/dshills/aperture" target="_blank" rel="noopener">aperture <span class="arrow">↗</span></a>
+          <a href="https://github.com/dshills/atlas" target="_blank" rel="noopener">atlas <span class="arrow">↗</span></a>
+        </div>
+      </li>
+      <li class="stop reveal">
+        <div class="marker">04</div>
+        <h3>Build</h3>
+        <p>The agent writes the code. What it did along the way is recorded, so “what did the agent actually do?” has an answer.</p>
+        <div class="tools">
+          <a href="https://github.com/dshills/witness" target="_blank" rel="noopener">witness <span class="arrow">↗</span></a>
+        </div>
+      </li>
+      <li class="stop reveal">
+        <div class="marker">05</div>
+        <h3>Review</h3>
+        <p>Check the diff, then check the intent: does the code match the spec and plan it was given, and only that?</p>
+        <div class="tools">
+          <a href="https://github.com/dshills/prism" target="_blank" rel="noopener">prism <span class="arrow">↗</span></a>
+          <a href="https://github.com/dshills/RealityCheck" target="_blank" rel="noopener">realitycheck <span class="arrow">↗</span></a>
+        </div>
+      </li>
+      <li class="stop reveal">
+        <div class="marker">06</div>
+        <h3>Verify</h3>
+        <p>Find the tests you don’t have, and scaffold honest skeletons for the ones that matter.</p>
+        <div class="tools">
+          <a href="https://github.com/dshills/verifier" target="_blank" rel="noopener">verifier <span class="arrow">↗</span></a>
+        </div>
+      </li>
+      <li class="stop reveal">
+        <div class="marker">07</div>
+        <h3>Document</h3>
+        <p>Generate docs where every claim traces back to source, and detect the drift when the code moves on.</p>
+        <div class="tools">
+          <a href="https://github.com/dshills/clarion" target="_blank" rel="noopener">clarion <span class="arrow">↗</span></a>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═════════ FIELD NOTES (writing) ═════════ -->
+<section class="section" id="writing">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker"><b>C</b> Field notes · writing</p>
+      <h2>Notes from <em>the transition.</em></h2>
+      <a class="more" href="writing.html">All 13 essays <span class="arrow">↗</span></a>
+    </header>
+
+    <div class="notes reveal">
+      <a class="note" href="https://dshills.medium.com/kern-a-systems-language-built-for-the-machines-that-write-code-0d4101c043d7" target="_blank" rel="noopener">
+        <div class="meta"><b>FN-013</b><span>Oct 28 · 2026</span></div>
+        <h3>kern: a systems language built for the machines that write code</h3>
+        <p>Most of the code written this year was not typed by a person. A native systems language designed around what agents need: predictable semantics, structured compiler feedback, and verifiable invariants.</p>
+        <span class="read">Read on Medium <span class="arrow">↗</span></span>
+      </a>
+      <a class="note" href="https://dshills.medium.com/building-kicadai-an-evidence-first-toolkit-for-ai-assisted-pcb-design-5d7308f4e49d" target="_blank" rel="noopener">
+        <div class="meta"><b>FN-012</b><span>Jul 09 · 2026</span></div>
+        <h3>Building KiCadAI: An Evidence-First Toolkit for AI-Assisted PCB Design</h3>
+        <p>Why AI-generated circuit boards need deterministic writers, machine-readable validation, and honest stop conditions.</p>
+        <span class="read">Read on Medium <span class="arrow">↗</span></span>
+      </a>
+      <a class="note" href="https://dshills.medium.com/i-built-five-gates-around-my-coding-agent-i-was-missing-the-sixth-d3579d101a4a" target="_blank" rel="noopener">
+        <div class="meta"><b>FN-011</b><span>Apr 19 · 2026</span></div>
         <h3>I Built Five Gates Around My Coding Agent. I Was Missing the Sixth.</h3>
-        <p>Every non-deterministic step in an agent workflow deserves a deterministic gate — and context selection is the one nobody's building.</p>
-      </div>
-      <span class="arrow">Read on Medium →</span>
-    </a>
-    <a class="write-card" href="https://dshills.medium.com/the-terminal-is-still-the-best-ide-building-an-ai-native-development-workflow-with-cli-tools-7adc645572ea" target="_blank" rel="noopener">
-      <div>
-        <div class="meta">MAR 04 · 2026 · AI</div>
-        <h3>The Terminal Is Still the Best IDE: Building an AI-Native Development Workflow with CLI Tools</h3>
-        <p>Why the command line — not the chat window — is where AI-native development is actually happening.</p>
-      </div>
-      <span class="arrow">Read on Medium →</span>
-    </a>
-    <a class="write-card" href="https://dshills.medium.com/why-i-stopped-letting-llms-see-everything-c8bf9ce0c209" target="_blank" rel="noopener">
-      <div>
-        <div class="meta">JAN 28 · 2026 · AI</div>
-        <h3>Why I Stopped Letting LLMs See Everything</h3>
-        <p>A practical case for bounded context: what to hide from the model, what to show it, and why the default of "paste the whole repo" is the wrong one.</p>
-      </div>
-      <span class="arrow">Read on Medium →</span>
-    </a>
-  </div>
-</section>
-
-<section class="band" id="opensource">
-  <div class="section-head reveal">
-    <div>
-      <div class="kicker">02 · Open source</div>
-      <h2>An AI-native development toolchain — in four acts.</h2>
-    </div>
-    <a class="more" href="projects.html">All projects <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-  </div>
-  <div class="projects reveal-stagger">
-    <a class="proj" href="https://github.com/dshills/speccritic" target="_blank" rel="noopener">
-      <div class="proj-head">
-        <div class="proj-name"><span class="sq"></span> speccritic</div>
-        <span class="stars">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>
-          0
-        </span>
-      </div>
-      <p>Evaluates specifications as formal contracts. Finds contradictions, hidden assumptions, and missing prerequisites <em>before</em> a line of code is written.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Specs</span><span class="tag">Step 01</span></div>
-    </a>
-    <a class="proj" href="https://github.com/dshills/plancritic" target="_blank" rel="noopener">
-      <div class="proj-head">
-        <div class="proj-name"><span class="sq" style="background:linear-gradient(135deg,#ec6cb9,#7b7ff6)"></span> plancritic</div>
-        <span class="stars">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>
-          1
-        </span>
-      </div>
-      <p>Reviews implementation plans and returns structured critique: contradictions, ambiguities, missing prerequisites, and concrete patches.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Planning</span><span class="tag">Step 02</span></div>
-    </a>
-    <a class="proj" href="https://github.com/dshills/prism" target="_blank" rel="noopener">
-      <div class="proj-head">
-        <div class="proj-name"><span class="sq" style="background:linear-gradient(135deg,#4ade80,#7b7ff6)"></span> prism</div>
-        <span class="stars">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>
-          1
-        </span>
-      </div>
-      <p>Local-first AI code review CLI. Reviews diffs, commits, and PRs across Anthropic, OpenAI, Gemini, and Ollama — with SARIF output and CI-friendly exit codes.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Multi-LLM</span><span class="tag">Step 03</span></div>
-    </a>
-    <a class="proj" href="https://github.com/dshills/RealityCheck" target="_blank" rel="noopener">
-      <div class="proj-head">
-        <div class="proj-name"><span class="sq" style="background:linear-gradient(135deg,#f59e0b,#ec6cb9)"></span> realitycheck</div>
-        <span class="stars">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>
-          0
-        </span>
-      </div>
-      <p>Intent enforcement for agentic systems. Verifies that the code an agent produced matches the spec and plan it was given — not just that it compiles.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Verification</span><span class="tag">Step 04</span></div>
-    </a>
-  </div>
-</section>
-
-<section class="band" id="experience">
-  <div class="section-head reveal">
-    <div>
-      <div class="kicker">03 · Experience</div>
-      <h2>Twenty years in rooms where software had to actually work.</h2>
-    </div>
-    <a class="more" href="about.html">Full CV <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-  </div>
-  <div class="timeline reveal-stagger">
-    <div class="job">
-      <div class="when">Feb 2026 — Present</div>
-      <div>
-        <div class="role">Fractional CTO · Principal Engineer</div>
-        <div class="co">Hills Consulting LLC — executive leadership and hands-on engineering for organizations building or modernizing complex systems.</div>
-      </div>
-      <div class="place">West Des Moines, IA</div>
-    </div>
-    <div class="job">
-      <div class="when">Dec 2024 — Feb 2026</div>
-      <div>
-        <div class="role">Chief Technology Officer</div>
-        <div class="co">Alopex — rebuilt a healthcare care-management platform from fragmented services to a unified Go / React / AWS architecture.</div>
-      </div>
-      <div class="place">Des Moines, IA</div>
-    </div>
-    <div class="job">
-      <div class="when">May 2022 — Jul 2023</div>
-      <div>
-        <div class="role">Technical Director · Lead Architect</div>
-        <div class="co">ConnectRN — led 5 principal engineers; owned the reliability roadmap and resolved critical bottlenecks across a high-traffic nurse-staffing platform.</div>
-      </div>
-      <div class="place">Waltham, MA</div>
-    </div>
-    <div class="job">
-      <div class="when">Nov 2021 — May 2022</div>
-      <div>
-        <div class="role">Principal Engineer</div>
-        <div class="co">ConnectRN — built financial systems for clinician pay and billing; designed microservices supporting dynamic pay structures.</div>
-      </div>
-      <div class="place">Waltham, MA</div>
-    </div>
-    <div class="job">
-      <div class="when">2015 — Nov 2021</div>
-      <div>
-        <div class="role">Fractional CTO · Architecture Consultant</div>
-        <div class="co">Hills Consulting LLC — embedded CTO and architecture work for ConnectRN, Certintell, Redivus Health, Play-It Health, MyDiabetesHome, and others.</div>
-      </div>
-      <div class="place">Healthcare Tech</div>
-    </div>
-    <div class="job">
-      <div class="when">2010 — 2015</div>
-      <div>
-        <div class="role">Chief Technology Officer · Principal Engineer</div>
-        <div class="co">BettrLife — built the team and product from the early days through scale. Maintained HIPAA compliance through external audits.</div>
-      </div>
-      <div class="place">Urbandale, IA</div>
-    </div>
-    <div class="job">
-      <div class="when">Earlier</div>
-      <div>
-        <div class="role">SVP Operations · VP Software Development · Chief Architect · MediNotes  →  VP Operations, Practice Solutions · Eclipsys</div>
-        <div class="co">Two decades in healthcare IT leadership — EHR systems, practice solutions, and the era that taught me what actually breaks in production.</div>
-      </div>
-      <div class="place">Healthcare IT</div>
+        <p>Every non-deterministic step in an agent workflow deserves a deterministic gate, and context selection is the one nobody’s building.</p>
+        <span class="read">Read on Medium <span class="arrow">↗</span></span>
+      </a>
     </div>
   </div>
 </section>
 
-<section class="final reveal" id="contact">
-  <h3>Let's build something <em style="font-style:italic;font-weight:500;background:linear-gradient(92deg,#fff,#b78af8);-webkit-background-clip:text;background-clip:text;color:transparent">remarkable</em>.</h3>
-  <p>Currently available for consulting — systems architecture, developer tooling, LLM infrastructure, and fractional CTO engagements.</p>
-  <div class="row">
-    <a class="btn-solid" href="https://github.com/dshills" target="_blank" rel="noopener">
-      GitHub
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M10 7h7v7"/></svg>
-    </a>
-    <a class="btn-ghost" href="https://dshills.medium.com" target="_blank" rel="noopener">Medium</a>
-    <a class="btn-ghost" href="https://linkedin.com/in/dshills" target="_blank" rel="noopener">LinkedIn</a>
+<!-- ═════════ TRAVERSE (experience) ═════════ -->
+<section class="section tight" id="experience">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker"><b>D</b> Traverse · experience</p>
+      <h2>Thirty years in rooms where software <em>had to actually work.</em></h2>
+      <a class="more" href="about.html">The long story <span class="arrow">↗</span></a>
+    </header>
+
+    <div class="traverse">
+      <article class="leg reveal">
+        <span class="when">Feb 2026 — Present</span>
+        <div><h3>Fractional CTO · Principal Engineer</h3>
+          <p><b>Hills Consulting LLC.</b> Executive leadership and hands-on engineering for organizations building or modernizing complex systems.</p></div>
+        <span class="where">West Des Moines, IA</span>
+      </article>
+      <article class="leg reveal">
+        <span class="when">Dec 2024 — Feb 2026</span>
+        <div><h3>Chief Technology Officer</h3>
+          <p><b>Alopex.</b> Rebuilt a healthcare care-management platform from fragmented services to a unified Go / React / AWS architecture.</p></div>
+        <span class="where">Des Moines, IA</span>
+      </article>
+      <article class="leg reveal">
+        <span class="when">May 2022 — Jul 2023</span>
+        <div><h3>Technical Director · Lead Architect</h3>
+          <p><b>ConnectRN.</b> Led 5 principal engineers; owned the reliability roadmap and resolved critical bottlenecks across a high-traffic nurse-staffing platform.</p></div>
+        <span class="where">Waltham, MA</span>
+      </article>
+      <article class="leg reveal">
+        <span class="when">Nov 2021 — May 2022</span>
+        <div><h3>Principal Engineer</h3>
+          <p><b>ConnectRN.</b> Built financial systems for clinician pay and billing; designed microservices supporting dynamic pay structures.</p></div>
+        <span class="where">Waltham, MA</span>
+      </article>
+      <article class="leg reveal">
+        <span class="when">2015 — Nov 2021</span>
+        <div><h3>Fractional CTO · Architecture Consultant</h3>
+          <p><b>Hills Consulting LLC.</b> Embedded CTO and architecture work for ConnectRN, Certintell, Redivus Health, Play-It Health, MyDiabetesHome, and others.</p></div>
+        <span class="where">Healthcare tech</span>
+      </article>
+      <article class="leg reveal">
+        <span class="when">2010 — 2015</span>
+        <div><h3>Chief Technology Officer · Principal Engineer</h3>
+          <p><b>BettrLife.</b> Built the team and product from the early days through scale. Maintained HIPAA compliance through external audits.</p></div>
+        <span class="where">Urbandale, IA</span>
+      </article>
+      <article class="leg reveal">
+        <span class="when">Earlier</span>
+        <div><h3>SVP Operations · Chief Architect · VP Operations</h3>
+          <p><b>MediNotes, then Eclipsys.</b> Healthcare IT leadership across EHR systems and practice solutions, and the era that taught me what actually breaks in production.</p></div>
+        <span class="where">Healthcare IT</span>
+      </article>
+    </div>
   </div>
 </section>
 
-<footer>
-  <div>© 2026 Davin Hills — Hills Consulting, LLC</div>
-  <ul>
-    <li><a href="projects.html">Open Source</a></li>
-    <li><a href="writing.html">Articles</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+<!-- ═════════ CONTACT ═════════ -->
+<section class="section night contact" id="contact" data-contours data-interactive data-seed="53">
+  <canvas aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="kicker reveal"><b>E</b> Contact</p>
+    <h2 class="reveal" style="margin-top:34px">Tell me about <em>the terrain.</em></h2>
+    <p class="lede reveal">The fastest way to start is a short note describing what you’re working on. Currently booking engagements in systems architecture, developer tooling, LLM infrastructure, and fractional CTO work.</p>
+    <div class="actions reveal">
+      <a class="btn" href="https://linkedin.com/in/dshills" target="_blank" rel="noopener">Message me on LinkedIn <span class="arrow">↗</span></a>
+      <a class="btn ghost" href="https://github.com/dshills" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn ghost" href="https://dshills.medium.com" target="_blank" rel="noopener">Medium</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Hills Consulting, LLC · West Des Moines, Iowa</span>
+    <nav aria-label="Footer">
+      <a href="#services">Services</a>
+      <a href="projects.html">Open source</a>
+      <a href="writing.html">Writing</a>
+      <a href="about.html">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="datum">
+      <span>Datum: production</span>
+      <span>Contour interval: one phase</span>
+      <span>Surveyed by Davin Hills</span>
+    </div>
+  </div>
 </footer>
 
-<script>
-(function(){
-  const targets = document.querySelectorAll('.reveal, .reveal-stagger');
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){
-    targets.forEach(el=>el.classList.add('in'));
-    return;
-  }
-  // Any section that's already above the viewport (deep-link hash jump) should
-  // appear visible — the observer only fires for elements entering the viewport.
-  const vh = window.innerHeight || document.documentElement.clientHeight;
-  targets.forEach(el=>{
-    const r = el.getBoundingClientRect();
-    if(r.top < vh * 0.1) el.classList.add('in');
-  });
-  const io = new IntersectionObserver((entries)=>{
-    for(const e of entries){
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    }
-  },{threshold:0.15, rootMargin:'0px 0px -6% 0px'});
-  targets.forEach(el=>{ if(!el.classList.contains('in')) io.observe(el); });
-})();
-</script>
+<script src="site.js" defer></script>
 </body>
 </html>

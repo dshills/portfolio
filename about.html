@@ -1,389 +1,172 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>About — Davin Hills</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About Davin Hills — Hills Consulting</title>
+<meta name="description" content="Davin Hills is the founder of Hills Consulting: 30+ years building, scaling, and rescuing healthcare and enterprise systems, and now making LLM-based development reliable enough to ship.">
+<meta property="og:title" content="About Davin Hills — Hills Consulting">
+<meta property="og:description" content="Davin Hills is the founder of Hills Consulting: 30+ years building, scaling, and rescuing healthcare and enterprise systems, and now making LLM-based development reliable enough to ship.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f0eadb">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#08090a;--bg-2:#0b0d10;--surface:#101114;
-    --border:rgba(255,255,255,0.06);--border-strong:rgba(255,255,255,0.1);
-    --text:#f7f8f8;--text-muted:#8a8f98;--text-dim:#62666d;
-    --accent:#7b7ff6;--accent-2:#b78af8;--accent-3:#5e6ad2;--pink:#ec6cb9;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"cv02","cv03","cv04","cv11"}
-  a{color:inherit;text-decoration:none}
-  body{overflow-x:hidden}
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.035;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    mix-blend-mode:overlay;
-  }
-  .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-  .aurora::before,.aurora::after{content:"";position:absolute;border-radius:50%;filter:blur(140px);opacity:.4}
-  .aurora::before{width:620px;height:620px;top:-200px;right:-140px;background:radial-gradient(circle,#5e6ad2 0%,#7b7ff6 40%,transparent 70%)}
-  .aurora::after{width:520px;height:520px;top:580px;left:-220px;background:radial-gradient(circle,#ec6cb9 0%,#b78af8 40%,transparent 72%);opacity:.28}
-
-  header.nav{position:sticky;top:16px;z-index:50;margin:16px auto 0;max-width:1180px;padding:0 24px}
-  .nav-inner{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:10px 14px 10px 18px;border:1px solid var(--border);border-radius:999px;
-    background:rgba(12,13,16,0.6);backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);
-  }
-  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-0.01em}
-  .brand .logo{width:22px;height:22px;border-radius:6px;background:conic-gradient(from 220deg at 50% 50%,#5e6ad2,#b78af8,#ec6cb9,#5e6ad2);box-shadow:0 0 0 1px rgba(255,255,255,0.06) inset,0 8px 24px rgba(94,106,210,.35)}
-  nav ul{display:flex;align-items:center;gap:6px;list-style:none}
-  nav a.link{padding:8px 12px;border-radius:999px;color:var(--text-muted);font-size:14px;transition:color .2s,background .2s}
-  nav a.link:hover,nav a.link.active{color:var(--text);background:rgba(255,255,255,0.04)}
-  .cta{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--text);color:#0b0c0f;font-weight:500;font-size:13.5px;transition:transform .15s,box-shadow .15s}
-  .cta:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(255,255,255,.08)}
-  .cta svg{width:14px;height:14px}
-
-  /* hero */
-  .page-hero{max-width:1180px;margin:0 auto;padding:100px 24px 60px;display:grid;grid-template-columns:1.5fr 1fr;gap:64px;align-items:end}
-  .page-hero .kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:20px;display:inline-flex;gap:10px;align-items:center}
-  .page-hero .kicker::before{content:"";width:28px;height:1px;background:var(--text-dim)}
-  .page-hero h1{font-size:clamp(44px,7vw,84px);line-height:1.02;letter-spacing:-0.045em;font-weight:600;max-width:14ch}
-  .page-hero h1 .grad{background:linear-gradient(92deg,#fff 0%,#cdbffc 50%,#7b7ff6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;font-family:'Playfair Display',Georgia,serif;font-weight:500;letter-spacing:-0.02em}
-  .page-hero .sub{margin-top:22px;color:var(--text-muted);max-width:60ch;font-size:17px;line-height:1.55}
-  .portrait{
-    position:relative;aspect-ratio:4/5;width:100%;max-width:340px;justify-self:end;
-    border:1px solid var(--border-strong);border-radius:20px;overflow:hidden;
-    background:
-      radial-gradient(ellipse at 30% 20%,rgba(183,138,248,.25),transparent 55%),
-      radial-gradient(ellipse at 70% 80%,rgba(236,108,185,.18),transparent 55%),
-      linear-gradient(180deg,#0f1015,#0a0b0e);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .portrait .mono{
-    font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:108px;font-weight:500;
-    background:linear-gradient(135deg,#fff 0%,#b78af8 70%,#7b7ff6 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-0.04em;
-  }
-  .portrait::after{
-    content:"— drop a portrait here";position:absolute;bottom:14px;right:16px;
-    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-dim);letter-spacing:0.05em;opacity:.7;
-  }
-
-  /* band base */
-  section.band{max-width:1180px;margin:0 auto;padding:100px 24px;position:relative}
-  .kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;display:inline-flex;gap:10px;align-items:center}
-  .kicker::before{content:"";width:28px;height:1px;background:var(--text-dim)}
-  h2.section-title{font-size:40px;line-height:1.08;letter-spacing:-0.035em;font-weight:600;max-width:24ch;margin-bottom:48px}
-
-  /* narrative bio */
-  .narrative{display:grid;grid-template-columns:220px 1fr;gap:60px;align-items:start;max-width:960px}
-  .narrative .label{position:sticky;top:120px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase}
-  .narrative .prose p{color:#cdd0d6;font-size:19px;line-height:1.6;margin-bottom:24px;max-width:66ch}
-  .narrative .prose p:last-child{margin-bottom:0}
-  .narrative .prose em{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:500;color:#fff}
-  .narrative .prose code{
-    font-family:'JetBrains Mono',monospace;font-size:15px;padding:1px 6px;border-radius:4px;
-    background:rgba(123,127,246,.1);color:#cdbffc;border:1px solid rgba(123,127,246,.15);
-  }
-
-  /* principles */
-  .principles{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-  .principle{background:var(--bg);padding:36px 32px;display:flex;flex-direction:column;gap:16px;transition:background .3s}
-  .principle:hover{background:#0d0f13}
-  .principle .num{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--accent-2);letter-spacing:0.14em;text-transform:uppercase}
-  .principle h3{font-size:22px;line-height:1.2;letter-spacing:-0.015em;font-weight:500}
-  .principle h3 em{font-style:italic;font-family:'Playfair Display',Georgia,serif;font-weight:500;color:#cdbffc}
-  .principle p{color:var(--text-muted);font-size:14.5px;line-height:1.6}
-
-  /* highlights */
-  .highlights{max-width:760px}
-  .hl{display:grid;grid-template-columns:60px 1fr;gap:28px;padding:22px 0;border-bottom:1px solid var(--border);align-items:baseline}
-  .hl:last-child{border-bottom:none}
-  .hl .mark{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);letter-spacing:0.08em}
-  .hl .text{color:#cdd0d6;font-size:16px;line-height:1.55}
-  .hl .text b{color:#fff;font-weight:500}
-  .hl .text .muted{color:var(--text-muted)}
-
-  /* available-for */
-  .services{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-  .service{
-    position:relative;border:1px solid var(--border);border-radius:16px;padding:30px;
-    background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0) 60%);
-    transition:transform .25s,border-color .25s;overflow:hidden;
-  }
-  .service::before{
-    content:"";position:absolute;inset:-1px;border-radius:16px;padding:1px;
-    background:linear-gradient(135deg,rgba(123,127,246,.35),rgba(236,108,185,0) 45%);
-    -webkit-mask:linear-gradient(#000,#000) content-box,linear-gradient(#000,#000);
-    -webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s;pointer-events:none;
-  }
-  .service:hover{transform:translateY(-2px);border-color:var(--border-strong)}
-  .service:hover::before{opacity:1}
-  .service .idx{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dim);letter-spacing:0.1em;margin-bottom:16px;display:block}
-  .service h3{font-size:19px;letter-spacing:-0.015em;font-weight:500;margin-bottom:12px}
-  .service p{color:var(--text-muted);font-size:14.5px;line-height:1.6}
-
-  /* final */
-  .final{
-    max-width:1180px;margin:60px auto 0;padding:80px 24px;position:relative;text-align:center;
-    border-top:1px solid var(--border);
-  }
-  .final .sig{
-    font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:26px;color:var(--text-muted);margin-bottom:36px;letter-spacing:-0.01em;
-  }
-  .final .sig b{color:#fff;font-weight:500}
-  .final h3{font-size:clamp(32px,4.5vw,56px);letter-spacing:-0.04em;line-height:1.1;font-weight:600;max-width:22ch;margin:0 auto}
-  .final h3 em{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:500;background:linear-gradient(92deg,#fff,#b78af8);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .final p{margin:18px auto 0;color:var(--text-muted);max-width:56ch;font-size:15.5px;line-height:1.55}
-  .final .row{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .btn-solid{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;background:linear-gradient(180deg,#fff 0%,#dddde0 100%);color:#0b0c0f;font-size:14px;font-weight:500;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 10px 30px rgba(255,255,255,0.08);transition:transform .15s}
-  .btn-solid:hover{transform:translateY(-1px)}
-  .btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;border:1px solid var(--border-strong);background:rgba(255,255,255,0.02);color:var(--text);font-size:14px;transition:background .2s,border-color .2s}
-  .btn-ghost:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.18)}
-  .btn-solid svg,.btn-ghost svg{width:14px;height:14px}
-
-  footer{
-    max-width:1180px;margin:0 auto;padding:40px 24px 60px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
-    color:var(--text-dim);font-size:13px;border-top:1px solid var(--border);
-  }
-  footer a{color:var(--text-muted)}
-  footer a:hover{color:var(--text)}
-  footer ul{list-style:none;display:flex;gap:20px}
-
-  @media (max-width: 900px){
-    .page-hero{grid-template-columns:1fr;gap:40px}
-    .portrait{max-width:260px;justify-self:start}
-    .narrative{grid-template-columns:1fr;gap:16px}
-    .narrative .label{position:static}
-    .principles{grid-template-columns:1fr}
-    .services{grid-template-columns:1fr}
-    .hl{grid-template-columns:1fr;gap:6px}
-    nav ul li:nth-child(-n+3){display:none}
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=DM+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
-<div class="aurora"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-<header class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="brand">
-      <span class="logo" aria-hidden="true"></span>
-      <span>Davin Hills</span>
+<header class="collar">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Hills Consulting — home">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 18c0-8 6-14 14-14s12 5 12 12-6 13-14 13S3 25 3 18Z"/><path d="M8.5 17.5c0-5 3.7-8.5 8.6-8.5 4.6 0 7.4 3 7.4 7.2 0 4.6-3.8 7.8-8.4 7.8-4.4 0-7.6-2.3-7.6-6.5Z"/><path d="M13.3 16.8c0-2.3 1.8-3.8 4-3.8 2 0 3.4 1.4 3.4 3.2 0 2-1.7 3.4-3.8 3.4-2 0-3.6-1-3.6-2.8Z"/><circle cx="17" cy="16.4" r="1.7" fill="#e2431b" stroke="none"/></svg>
+      <span>Hills<br>Consulting</span>
     </a>
-    <nav>
-      <ul>
-        <li><a class="link" href="projects.html">Open Source</a></li>
-        <li><a class="link" href="writing.html">Articles</a></li>
-        <li><a class="link" href="index.html#experience">Experience</a></li>
-        <li><a class="link active" href="about.html">About</a></li>
-        <li>
-          <a class="cta" href="index.html#contact">
-            Get in touch
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </li>
-      </ul>
+    <span class="sheet">Sheet 04 of 04 · About</span>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html#services">Services</a>
+      <a href="projects.html">Open source</a>
+      <a href="writing.html">Writing</a>
+      <a href="about.html" aria-current="page">About</a>
+      <a class="nav-cta" href="index.html#contact">Contact</a>
     </nav>
   </div>
 </header>
 
-<section class="page-hero">
-  <div>
-    <div class="kicker">About</div>
-    <h1>The long story, <span class="grad">briefly</span>.</h1>
-    <p class="sub">
-      Hands-on technical executive with 30+ years of experience building, scaling,
-      and <em style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:500;color:#fff">rescuing</em>
-      complex healthcare and enterprise systems. I operate across all levels —
-      from writing production-grade code to leading engineering organizations —
-      and have spent the last few years making LLM-based development reliable enough to ship.
-    </p>
-  </div>
-  <div class="portrait" aria-hidden="true">
-    <div class="mono">DH</div>
-  </div>
-</section>
+<main id="main">
 
-<section class="band" id="arc">
-  <div class="kicker">01 · The arc</div>
-  <h2 class="section-title">From EHR systems to LLM tooling, by way of everything in between.</h2>
-
-  <div class="narrative">
-    <div class="label">Early 2000s<br>Healthcare IT</div>
-    <div class="prose">
-      <p>
-        I started in healthcare IT in the early 2000s — <em>SVP of Operations</em> and then
-        <em>Chief Architect</em> at MediNotes, then VP of Operations at Eclipsys — working on
-        electronic health records and practice-solutions systems used by physicians and
-        nurses every shift. It was the era that taught me the only thing that really
-        matters about software in healthcare: it has to work, every time, or someone gets hurt.
-      </p>
-    </div>
-  </div>
-
-  <div class="narrative" style="margin-top:48px">
-    <div class="label">2010 — 2023<br>Leadership</div>
-    <div class="prose">
-      <p>
-        The 2010s were all leadership. Five years as <em>CTO at BettrLife</em>, a mobile-health
-        startup, where I built the team and the product from the early days through scale.
-        Then six more years running <em>Hills Consulting LLC</em> — fractional-CTO work
-        for a string of healthcare-tech companies (Certintell, Redivus Health, Play-It Health,
-        MyDiabetesHome, ConnectRN) that needed experienced leadership without a full-time hire.
-        Then ConnectRN itself, where I came in as Principal Engineer and left as <em>Technical
-        Director / Lead Architect</em> — the primary escalation for production incidents across
-        a high-traffic nurse-staffing platform.
-      </p>
-    </div>
-  </div>
-
-  <div class="narrative" style="margin-top:48px">
-    <div class="label">Dec 2024 — Feb 2026<br>The AI turn</div>
-    <div class="prose">
-      <p>
-        Most recently: <em>CTO at Alopex</em>, back in healthcare IT — rebuilding a fragmented
-        platform into a unified Go / React / AWS architecture. On the side, quietly
-        building the AI coding tools I wished existed. Those projects
-        (<code>speccritic</code>, <code>plancritic</code>, <code>prism</code>, <code>realitycheck</code>,
-        <code>clarion</code>, <code>verifier</code>, <code>atlas</code>) became a connected
-        <em>AI-Native Development Toolchain</em> — and are now most of what I work on.
-      </p>
-    </div>
-  </div>
-
-  <div class="narrative" style="margin-top:48px">
-    <div class="label">Today<br>Independent</div>
-    <div class="prose">
-      <p>
-        Now: independent again. Hills Consulting, full time. Building open-source tooling.
-        Writing on Medium. Available for the kind of work that values <em>both</em> speed and
-        rigor — and increasingly skeptical of anything that promises one without the other.
-      </p>
+<section class="hero page-hero">
+  <div class="wrap">
+    <div class="map-frame">
+      <div class="map fade-left" data-contours data-interactive data-seed="89" style="cursor:crosshair">
+        <canvas aria-hidden="true"></canvas>
+        <span class="coord tl">41°34′38″N</span>
+        <span class="coord tr">93°42′41″W</span>
+        <span class="coord br" data-elev aria-hidden="true">Elev <b>950</b> ft</span>
+        <div class="map-body">
+          <p class="eyebrow"><i></i> About · Davin Hills, founder</p>
+          <h1>The long story, <em>briefly.</em></h1>
+          <p class="lede">Hands-on technical executive with 30+ years of experience building, scaling, and rescuing complex healthcare and enterprise systems. I operate across all levels, from writing production-grade code to leading engineering organizations, and have spent the last few years making LLM-based development reliable enough to ship.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="band" id="principles">
-  <div class="kicker">02 · How I work</div>
-  <h2 class="section-title">A few things I've learned that I <em style="font-style:italic;font-family:'Playfair Display',Georgia,serif;font-weight:500;color:#cdbffc">actually trust</em>.</h2>
-
-  <div class="principles">
-    <div class="principle">
-      <span class="num">/ 01</span>
-      <h3>Specify <em>before</em> you build.</h3>
-      <p>The most expensive part of software is the part that's wrong. That's true with humans; it's triply true with LLM agents. Most of my open-source work starts from the same premise: turn requirements into a contract, check the contract, then write the code.</p>
-    </div>
-    <div class="principle">
-      <span class="num">/ 02</span>
-      <h3>Small tools, <em>sharp edges</em>.</h3>
-      <p>Everything I ship is small, opinionated, and designed to be composed. One command does one job and returns a deterministic exit code. If you can automate it, a CLI beats a UI. If you can explain it in a README, you probably don't need a framework.</p>
-    </div>
-    <div class="principle">
-      <span class="num">/ 03</span>
-      <h3>Healthcare taught me what <em>"correct"</em> means.</h3>
-      <p>Twenty years in healthcare IT is a crash course in the difference between "the tests pass" and "the system actually works." Software that can't afford to be wrong teaches you a different kind of discipline. I try to bring that discipline to everything now, not just medical systems.</p>
-    </div>
-    <div class="principle">
-      <span class="num">/ 04</span>
-      <h3>Writing <em>is</em> thinking.</h3>
-      <p>I publish essays because I don't trust ideas I can't explain to a stranger. The writing is the thinking — what's clear in prose tends to be clear in code, and what's muddy in prose almost always produces muddy systems.</p>
-    </div>
-  </div>
-</section>
-
-<section class="band" id="record">
-  <div class="kicker">03 · For the record</div>
-  <h2 class="section-title">A few things worth mentioning.</h2>
-
-  <div class="highlights">
-    <div class="hl">
-      <span class="mark">01</span>
-      <div class="text"><b>30+ years shipping software</b> <span class="muted">— across Go, enterprise systems, and healthcare IT.</span></div>
-    </div>
-    <div class="hl">
-      <span class="mark">02</span>
-      <div class="text"><b>CTO and fractional-CTO engagements</b> <span class="muted">at BettrLife, Alopex, Hills Consulting LLC, and MediNotes.</span></div>
-    </div>
-    <div class="hl">
-      <span class="mark">03</span>
-      <div class="text"><b>40+ open-source Go projects</b> <span class="muted">— including the AI-Native Development Toolchain and HL7 / FHIR libraries still widely used across healthcare integrations.</span></div>
-    </div>
-    <div class="hl">
-      <span class="mark">04</span>
-      <div class="text"><b>11 essays on Medium</b> <span class="muted">on AI, LLMs, and developer tooling.</span></div>
-    </div>
-    <div class="hl">
-      <span class="mark">05</span>
-      <div class="text"><b>Inc. 500</b> <span class="muted">— multiple years.</span></div>
-    </div>
-    <div class="hl">
-      <span class="mark">06</span>
-      <div class="text"><b>Technology Association of Iowa Prometheus Award</b></div>
-    </div>
-    <div class="hl">
-      <span class="mark">07</span>
-      <div class="text"><b>ComputerWorld Visionary Technology Award</b> <span class="muted">— earlier career.</span></div>
-    </div>
-    <div class="hl">
-      <span class="mark">08</span>
-      <div class="text"><b>Drake University</b> <span class="muted">— BS, Chemistry (Des Moines, IA).</span></div>
+<section class="section tight">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker"><b>A</b> The arc</p>
+      <h2>From EHR systems to LLM tooling, <em>by way of everything in between.</em></h2>
+    </header>
+    <div class="arc">
+      <article class="era reveal">
+        <span class="when">Early 2000s</span>
+        <h3>Healthcare IT</h3>
+        <p>I started in healthcare IT in the early 2000s: <strong>SVP of Operations</strong> and then <strong>Chief Architect</strong> at MediNotes, then VP of Operations at Eclipsys, working on electronic health records and practice-solutions systems used by physicians and nurses every shift. It was the era that taught me the only thing that really matters about software in healthcare: it has to work, every time, or someone gets hurt.</p>
+      </article>
+      <article class="era reveal">
+        <span class="when">2010 — 2023</span>
+        <h3>Leadership</h3>
+        <p>The 2010s were all leadership. Five years as <strong>CTO at BettrLife</strong>, a mobile-health startup, where I built the team and the product from the early days through scale. Then six more years running <strong>Hills Consulting LLC</strong>: fractional-CTO work for a string of healthcare-tech companies (Certintell, Redivus Health, Play-It Health, MyDiabetesHome, ConnectRN) that needed experienced leadership without a full-time hire. Then ConnectRN itself, where I came in as Principal Engineer and left as <strong>Technical Director / Lead Architect</strong>, the primary escalation for production incidents across a high-traffic nurse-staffing platform.</p>
+      </article>
+      <article class="era reveal">
+        <span class="when">Dec 2024 — Feb 2026</span>
+        <h3>The AI turn</h3>
+        <p><strong>CTO at Alopex</strong>, back in healthcare IT, rebuilding a fragmented platform into a unified Go / React / AWS architecture. On the side, quietly building the AI coding tools I wished existed. Those projects (<a href="https://github.com/dshills/speccritic" target="_blank" rel="noopener">speccritic</a>, <a href="https://github.com/dshills/plancritic" target="_blank" rel="noopener">plancritic</a>, <a href="https://github.com/dshills/prism" target="_blank" rel="noopener">prism</a>, <a href="https://github.com/dshills/RealityCheck" target="_blank" rel="noopener">realitycheck</a>, <a href="https://github.com/dshills/clarion" target="_blank" rel="noopener">clarion</a>, <a href="https://github.com/dshills/verifier" target="_blank" rel="noopener">verifier</a>, <a href="https://github.com/dshills/atlas" target="_blank" rel="noopener">atlas</a>) became a connected <strong>AI-native development toolchain</strong>, and are now most of what I work on.</p>
+      </article>
+      <article class="era reveal">
+        <span class="when">Today</span>
+        <h3>Independent</h3>
+        <p>Independent again. Hills Consulting, full time. Building open-source tooling. Writing on Medium. Available for the kind of work that values <em>both</em> speed and rigor, and increasingly skeptical of anything that promises one without the other.</p>
+      </article>
     </div>
   </div>
 </section>
 
-<section class="band" id="available">
-  <div class="kicker">04 · Currently available</div>
-  <h2 class="section-title">What I'm taking on in 2026.</h2>
-
-  <div class="services">
-    <div class="service">
-      <span class="idx">/ 01 — Fractional CTO &amp; engineering leadership</span>
-      <h3>Embedded technical leadership.</h3>
-      <p>Hands-on CTO work for companies past product-market fit but facing the architectural, team, and delivery bends that come next. Recurring 1–3 day/week engagements. Distributed teams, roadmap ownership, hiring, and the unglamorous work of turning ad-hoc engineering into a shippable practice.</p>
-    </div>
-    <div class="service">
-      <span class="idx">/ 02 — Architecture review &amp; healthcare compliance</span>
-      <h3>Systems audits, with HIPAA receipts.</h3>
-      <p>Deep reviews of existing systems, cloud infrastructure, and team practices — grounded in two decades building HIPAA-compliant healthcare platforms (HL7, FHIR, EHR integrations). Particularly valuable before a migration, a platform rebuild, or a diligence round where the technical story has to hold up.</p>
-    </div>
-    <div class="service">
-      <span class="idx">/ 03 — AI-native development &amp; LLM infrastructure</span>
-      <h3>From demo to production.</h3>
-      <p>Helping teams move from prototype LLM features to systems you'd actually ship: spec-first workflows, deterministic review, context budgets, evaluation, observability, cost. The working material behind my open-source toolchain and most of the writing.</p>
-    </div>
-    <div class="service">
-      <span class="idx">/ 04 — Advisory, diligence &amp; workshops</span>
-      <h3>Short engagements, specific questions.</h3>
-      <p>Board advisory, technical diligence for investors, and focused workshops on AI-native development for engineering teams. For when the question is narrow, the stakes are real, and the answer benefits from someone who's been shipping software for thirty years and writing about the transition.</p>
+<section class="section tight">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker"><b>B</b> How I work</p>
+      <h2>A few things I’ve learned that I <em>actually trust.</em></h2>
+    </header>
+    <div class="principles reveal">
+      <article class="service">
+        <span class="no">/ 01</span>
+        <h3>Specify before you build.</h3>
+        <p>The most expensive part of software is the part that’s wrong. That’s true with humans; it’s triply true with LLM agents. Most of my open-source work starts from the same premise: turn requirements into a contract, check the contract, then write the code.</p>
+      </article>
+      <article class="service">
+        <span class="no">/ 02</span>
+        <h3>Small tools, sharp edges.</h3>
+        <p>Everything I ship is small, opinionated, and designed to be composed. One command does one job and returns a deterministic exit code. If you can automate it, a CLI beats a UI. If you can explain it in a README, you probably don’t need a framework.</p>
+      </article>
+      <article class="service">
+        <span class="no">/ 03</span>
+        <h3>Healthcare taught me what “correct” means.</h3>
+        <p>Twenty years in healthcare IT is a crash course in the difference between “the tests pass” and “the system actually works.” Software that can’t afford to be wrong teaches you a different kind of discipline. I try to bring that discipline to everything now, not just medical systems.</p>
+      </article>
+      <article class="service">
+        <span class="no">/ 04</span>
+        <h3>Writing is thinking.</h3>
+        <p>I publish essays because I don’t trust ideas I can’t explain to a stranger. The writing is the thinking: what’s clear in prose tends to be clear in code, and what’s muddy in prose almost always produces muddy systems.</p>
+      </article>
     </div>
   </div>
 </section>
 
-<section class="final" id="contact">
-  <div class="sig">— <b>Davin</b></div>
-  <h3>Let's build something <em>remarkable</em>.</h3>
-  <p>I'm currently booking engagements for 2026. If any of the above sounds like a fit, the fastest way to start is a short note describing what you're working on.</p>
-  <div class="row">
-    <a class="btn-solid" href="https://github.com/dshills" target="_blank" rel="noopener">
-      GitHub
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M10 7h7v7"/></svg>
-    </a>
-    <a class="btn-ghost" href="https://dshills.medium.com" target="_blank" rel="noopener">Medium</a>
-    <a class="btn-ghost" href="https://linkedin.com/in/dshills" target="_blank" rel="noopener">LinkedIn</a>
+<section class="section tight">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker"><b>C</b> For the record</p>
+      <h2>A few things <em>worth mentioning.</em></h2>
+    </header>
+    <ol class="record reveal">
+      <li><span>01</span><div><b>30+ years shipping software</b> across Go, enterprise systems, and healthcare IT.</div></li>
+      <li><span>02</span><div><b>CTO and fractional-CTO engagements</b> at BettrLife, Alopex, Hills Consulting LLC, and MediNotes.</div></li>
+      <li><span>03</span><div><b>50+ open-source repositories</b>, including the AI-native development toolchain and HL7 / FHIR libraries used across healthcare integrations.</div></li>
+      <li><span>04</span><div><b>13 essays on Medium</b> on AI, LLMs, and developer tooling.</div></li>
+      <li><span>05</span><div><b>Inc. 500</b>, multiple years.</div></li>
+      <li><span>06</span><div><b>Technology Association of Iowa Prometheus Award.</b></div></li>
+      <li><span>07</span><div><b>ComputerWorld Visionary Technology Award</b>, earlier career.</div></li>
+      <li><span>08</span><div><b>Drake University</b>, BS Chemistry (Des Moines, IA).</div></li>
+    </ol>
+
+    <aside class="callout reveal">
+      <div>
+        <h2>Sounds like a fit?</h2>
+        <p>I’m currently booking new engagements. The fastest way to start is a short note describing what you’re working on. The four ways I usually work are laid out on the <a href='index.html#services' style='border-bottom:1.5px solid var(--blaze)'>services sheet</a>.</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="index.html#contact">Start a conversation <span class="arrow">↗</span></a>
+      </div>
+    </aside>
   </div>
 </section>
+</main>
 
-<footer>
-  <div>© 2026 Davin Hills — Hills Consulting, LLC</div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="projects.html">Open Source</a></li>
-    <li><a href="writing.html">Articles</a></li>
-    <li><a href="index.html#experience">Experience</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
-  </ul>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Hills Consulting, LLC · West Des Moines, Iowa</span>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="projects.html">Open source</a>
+      <a href="writing.html">Writing</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="datum">
+      <span>Datum: production</span>
+      <span>Contour interval: one phase</span>
+      <span>Surveyed by Davin Hills</span>
+    </div>
+  </div>
 </footer>
 
+<script src="site.js" defer></script>
 </body>
 </html>

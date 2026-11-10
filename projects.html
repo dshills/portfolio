@@ -1,647 +1,307 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Open Source — Davin Hills</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Open source — Hills Consulting</title>
+<meta name="description" content="Open-source work by Davin Hills: a ten-tool toolchain for reliable AI-assisted development, plus languages, hardware tooling, and HL7 / FHIR libraries in Go.">
+<meta property="og:title" content="Open source — Hills Consulting">
+<meta property="og:description" content="Open-source work by Davin Hills: a ten-tool toolchain for reliable AI-assisted development, plus languages, hardware tooling, and HL7 / FHIR libraries in Go.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f0eadb">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#08090a;--bg-2:#0b0d10;--surface:#101114;
-    --border:rgba(255,255,255,0.06);--border-strong:rgba(255,255,255,0.1);
-    --text:#f7f8f8;--text-muted:#8a8f98;--text-dim:#62666d;
-    --accent:#7b7ff6;--accent-2:#b78af8;--accent-3:#5e6ad2;--pink:#ec6cb9;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"cv02","cv03","cv04","cv11"}
-  a{color:inherit;text-decoration:none}
-  body{overflow-x:hidden}
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.035;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    mix-blend-mode:overlay;
-  }
-  .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-  .aurora::before,.aurora::after{content:"";position:absolute;border-radius:50%;filter:blur(140px);opacity:.4}
-  .aurora::before{width:620px;height:620px;top:-180px;right:-120px;background:radial-gradient(circle,#5e6ad2 0%,#7b7ff6 40%,transparent 70%)}
-  .aurora::after{width:520px;height:520px;top:620px;left:-220px;background:radial-gradient(circle,#ec6cb9 0%,#b78af8 40%,transparent 72%);opacity:.25}
-
-  header.nav{position:sticky;top:16px;z-index:50;margin:16px auto 0;max-width:1180px;padding:0 24px}
-  .nav-inner{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:10px 14px 10px 18px;border:1px solid var(--border);border-radius:999px;
-    background:rgba(12,13,16,0.6);backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);
-  }
-  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-0.01em}
-  .brand .logo{width:22px;height:22px;border-radius:6px;background:conic-gradient(from 220deg at 50% 50%,#5e6ad2,#b78af8,#ec6cb9,#5e6ad2);box-shadow:0 0 0 1px rgba(255,255,255,0.06) inset,0 8px 24px rgba(94,106,210,.35)}
-  nav ul{display:flex;align-items:center;gap:6px;list-style:none}
-  nav a.link{padding:8px 12px;border-radius:999px;color:var(--text-muted);font-size:14px;transition:color .2s,background .2s}
-  nav a.link:hover,nav a.link.active{color:var(--text);background:rgba(255,255,255,0.04)}
-  .cta{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--text);color:#0b0c0f;font-weight:500;font-size:13.5px;transition:transform .15s,box-shadow .15s}
-  .cta:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(255,255,255,.08)}
-  .cta svg{width:14px;height:14px}
-
-  /* page header */
-  .page-hero{max-width:1180px;margin:0 auto;padding:100px 24px 56px}
-  .page-hero .kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:20px;display:inline-flex;gap:10px;align-items:center}
-  .page-hero .kicker::before{content:"";width:28px;height:1px;background:var(--text-dim)}
-  .page-hero h1{font-size:clamp(44px,7vw,84px);line-height:1.02;letter-spacing:-0.045em;font-weight:600;max-width:16ch}
-  .page-hero h1 .grad{background:linear-gradient(92deg,#fff 0%,#cdbffc 50%,#7b7ff6 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .page-hero .sub{margin-top:22px;color:var(--text-muted);max-width:64ch;font-size:17px;line-height:1.55}
-  .page-stats{margin-top:40px;display:flex;gap:40px;border-top:1px solid var(--border);padding-top:24px;flex-wrap:wrap}
-  .page-stat .num{font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:-0.02em}
-  .page-stat .lbl{font-size:12.5px;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.05em}
-
-  /* section base */
-  section.band{max-width:1180px;margin:0 auto;padding:80px 24px;position:relative}
-  .section-head{display:flex;align-items:end;justify-content:space-between;gap:40px;margin-bottom:40px}
-  .section-head .kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;display:inline-flex;gap:10px;align-items:center}
-  .section-head .kicker::before{content:"";width:28px;height:1px;background:var(--text-dim)}
-  .section-head h2{font-size:40px;line-height:1.05;letter-spacing:-0.035em;font-weight:600;max-width:22ch}
-  .section-head .side{color:var(--text-muted);max-width:340px;font-size:14.5px;line-height:1.55}
-
-  /* flagship cards — large detail */
-  .flagship{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-  .fcard{
-    position:relative;border:1px solid var(--border);border-radius:18px;padding:30px;
-    background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0) 60%);
-    transition:transform .25s,border-color .25s;overflow:hidden;display:flex;flex-direction:column;min-height:280px;
-  }
-  .fcard::before{
-    content:"";position:absolute;inset:-1px;border-radius:18px;padding:1px;
-    background:linear-gradient(135deg,rgba(123,127,246,.4),rgba(236,108,185,0) 45%);
-    -webkit-mask:linear-gradient(#000,#000) content-box,linear-gradient(#000,#000);
-    -webkit-mask-composite:xor;mask-composite:exclude;
-    opacity:0;transition:opacity .3s;pointer-events:none;
-  }
-  .fcard:hover{transform:translateY(-2px)}
-  .fcard:hover::before{opacity:1}
-  .fcard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
-  .fcard-name{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:500;letter-spacing:-0.015em}
-  .fcard-name .sq{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#5e6ad2,#b78af8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
-  .pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid var(--border);color:var(--text-muted);letter-spacing:0.03em}
-  .pill.wip{color:#fbbf24;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.05);display:inline-flex;align-items:center;gap:6px}
-  .pill.wip::before{content:"";width:5px;height:5px;border-radius:50%;background:#fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,.2);animation:pulse 2s ease-in-out infinite}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(251,191,36,.2)}50%{box-shadow:0 0 0 6px rgba(251,191,36,.05)}}
-  .fcard p{color:var(--text-muted);font-size:14.5px;line-height:1.6;flex:1}
-  .fcard-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;padding-top:18px;border-top:1px solid var(--border)}
-  .fcard-meta{display:flex;gap:16px;align-items:center;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11.5px}
-  .fcard-meta span{display:inline-flex;align-items:center;gap:5px}
-  .fcard-link{color:var(--text-muted);font-size:13px;display:inline-flex;align-items:center;gap:6px;transition:color .2s}
-  .fcard:hover .fcard-link{color:var(--accent-2)}
-  .fcard-link svg{width:13px;height:13px}
-  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
-  .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:3px 9px;border:1px solid var(--border);border-radius:6px;color:var(--text-muted)}
-
-  /* notable — compact cards */
-  .notable{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .ncard{
-    position:relative;border:1px solid var(--border);border-radius:14px;padding:20px;
-    background:rgba(255,255,255,0.015);transition:border-color .25s,transform .25s;overflow:hidden;
-  }
-  .ncard:hover{transform:translateY(-2px);border-color:var(--border-strong)}
-  .ncard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-  .ncard-name{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;letter-spacing:-0.01em}
-  .ncard-name .sq{width:18px;height:18px;border-radius:5px;background:linear-gradient(135deg,#5e6ad2,#b78af8)}
-  .ncard-name.healthcare .sq{background:linear-gradient(135deg,#34d399,#60a5fa)}
-  .ncard-stars{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);display:inline-flex;gap:5px;align-items:center;opacity:.8}
-  .ncard p{color:var(--text-muted);font-size:13.5px;line-height:1.55}
-  .ncard .tags{margin-top:14px}
-  .ncard .tag{font-size:10.5px;padding:2px 7px}
-
-  /* archive — dense list / table */
-  .archive{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:rgba(255,255,255,0.01)}
-  .arch-head,.arch-row{
-    display:grid;grid-template-columns:1.1fr 2.4fr 90px 70px 80px;gap:24px;padding:14px 22px;align-items:center;
-  }
-  .arch-head{background:rgba(255,255,255,0.015);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim)}
-  .arch-row{border-bottom:1px solid var(--border);transition:background .2s;cursor:pointer}
-  .arch-row:last-child{border-bottom:none}
-  .arch-row:hover{background:rgba(123,127,246,0.04)}
-  .arch-name{font-weight:500;font-size:14.5px;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px}
-  .arch-name .dot-sm{width:6px;height:6px;border-radius:50%;background:var(--text-dim)}
-  .arch-desc{color:var(--text-muted);font-size:13.5px;line-height:1.5}
-  .arch-meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim)}
-  .arch-stars{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);display:inline-flex;gap:4px;align-items:center}
-  .arch-link{justify-self:end;color:var(--text-dim);transition:color .2s;display:inline-flex;align-items:center;gap:4px}
-  .arch-row:hover .arch-link{color:var(--accent-2)}
-  .arch-link svg{width:12px;height:12px}
-
-  /* CTA footer band */
-  .final{
-    max-width:1180px;margin:80px auto 0;padding:80px 24px;position:relative;text-align:center;
-    border-top:1px solid var(--border);
-  }
-  .final h3{font-size:clamp(32px,4.5vw,56px);letter-spacing:-0.04em;line-height:1.05;font-weight:600;max-width:22ch;margin:0 auto}
-  .final p{margin:18px auto 0;color:var(--text-muted);max-width:56ch;font-size:15.5px;line-height:1.55}
-  .final .row{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .btn-solid{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;background:linear-gradient(180deg,#fff 0%,#dddde0 100%);color:#0b0c0f;font-size:14px;font-weight:500;box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 10px 30px rgba(255,255,255,0.08);transition:transform .15s}
-  .btn-solid:hover{transform:translateY(-1px)}
-  .btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;border:1px solid var(--border-strong);background:rgba(255,255,255,0.02);color:var(--text);font-size:14px;transition:background .2s,border-color .2s}
-  .btn-ghost:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.18)}
-  .btn-solid svg,.btn-ghost svg{width:14px;height:14px}
-
-  footer{
-    max-width:1180px;margin:0 auto;padding:40px 24px 60px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
-    color:var(--text-dim);font-size:13px;border-top:1px solid var(--border);
-  }
-  footer a{color:var(--text-muted)}
-  footer a:hover{color:var(--text)}
-  footer ul{list-style:none;display:flex;gap:20px}
-
-  @media (max-width:900px){
-    .flagship{grid-template-columns:1fr}
-    .notable{grid-template-columns:1fr}
-    .arch-head,.arch-row{grid-template-columns:1fr;gap:6px;padding:16px 18px}
-    .arch-head span:not(:first-child){display:none}
-    .section-head{flex-direction:column;align-items:flex-start}
-    nav ul li:nth-child(-n+3){display:none}
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=DM+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
-<div class="aurora"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-<header class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="brand">
-      <span class="logo" aria-hidden="true"></span>
-      <span>Davin Hills</span>
+<header class="collar">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Hills Consulting — home">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 18c0-8 6-14 14-14s12 5 12 12-6 13-14 13S3 25 3 18Z"/><path d="M8.5 17.5c0-5 3.7-8.5 8.6-8.5 4.6 0 7.4 3 7.4 7.2 0 4.6-3.8 7.8-8.4 7.8-4.4 0-7.6-2.3-7.6-6.5Z"/><path d="M13.3 16.8c0-2.3 1.8-3.8 4-3.8 2 0 3.4 1.4 3.4 3.2 0 2-1.7 3.4-3.8 3.4-2 0-3.6-1-3.6-2.8Z"/><circle cx="17" cy="16.4" r="1.7" fill="#e2431b" stroke="none"/></svg>
+      <span>Hills<br>Consulting</span>
     </a>
-    <nav>
-      <ul>
-        <li><a class="link active" href="projects.html">Open Source</a></li>
-        <li><a class="link" href="writing.html">Articles</a></li>
-        <li><a class="link" href="index.html#experience">Experience</a></li>
-        <li><a class="link" href="about.html">About</a></li>
-        <li>
-          <a class="cta" href="index.html#contact">
-            Get in touch
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </li>
-      </ul>
+    <span class="sheet">Sheet 02 of 04 · Open source</span>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html#services">Services</a>
+      <a href="projects.html" aria-current="page">Open source</a>
+      <a href="writing.html">Writing</a>
+      <a href="about.html">About</a>
+      <a class="nav-cta" href="index.html#contact">Contact</a>
     </nav>
   </div>
 </header>
 
-<section class="page-hero">
-  <div class="kicker">Open Source · Built in Go</div>
-  <h1>An <span class="grad">AI-native development</span> toolchain — and a decade of Go before it.</h1>
-  <p class="sub">Small, sharp tools focused on one problem: making LLM-driven development reliable enough for production. Specs as contracts, deterministic reviews, context budgets, test gaps — the unglamorous plumbing that turns an AI agent from a demo into something you'd actually ship with.</p>
-  <div class="page-stats">
-    <div class="page-stat"><div class="num">10</div><div class="lbl">Flagship · AI toolkit</div></div>
-    <div class="page-stat"><div class="num">12</div><div class="lbl">Notable projects</div></div>
-    <div class="page-stat"><div class="num">13</div><div class="lbl">Archive · Earlier work</div></div>
-    <div class="page-stat"><div class="num">100%</div><div class="lbl">Written in Go</div></div>
-  </div>
-</section>
+<main id="main">
 
-<section class="band" id="flagship">
-  <div class="section-head">
-    <div>
-      <div class="kicker">Tier 01 · Flagship</div>
-      <h2>The agentic coding toolkit.</h2>
+<section class="hero page-hero">
+  <div class="wrap">
+    <div class="map-frame">
+      <div class="map fade-left" data-contours data-interactive data-seed="23" style="cursor:crosshair">
+        <canvas aria-hidden="true"></canvas>
+        <span class="coord tl">41°34′38″N</span>
+        <span class="coord tr">93°42′41″W</span>
+        <span class="coord br" data-elev aria-hidden="true">Elev <b>950</b> ft</span>
+        <div class="map-body">
+          <p class="eyebrow"><i></i> Open source · mostly Go</p>
+          <h1>Small tools, <em>sharp edges.</em></h1>
+          <p class="lede">Small, opinionated tools focused on one problem: making LLM-driven development reliable enough for production. Specs as contracts, deterministic reviews, context budgets, test gaps. Plus the hardware, language, and healthcare work that grew up around it.</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div><b>10</b><span>Flagship · agentic toolkit</span></div>
+        <div><b>08</b><span>New ground · 2026</span></div>
+        <div><b>09</b><span>Adjacent · agents, data, healthcare</span></div>
+        <div><b>12</b><span>Archive · earlier work</span></div>
+      </div>
     </div>
-    <div class="side">Ten tools that compose into a complete spec-first workflow for AI-assisted development: specify, plan, build, review, verify, document.</div>
-  </div>
-
-  <div class="flagship">
-
-    <a class="fcard" href="https://github.com/dshills/speccritic" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq"></span> speccritic</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Evaluates software specifications as formal contracts. Identifies contradictions, hidden assumptions, and missing prerequisites <em>before</em> a line of code is written.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">LLM</span><span class="tag">Specs</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-          <span>Apr 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/plancritic" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#ec6cb9,#7b7ff6)"></span> plancritic</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Reviews implementation plans and returns structured critique: contradictions, ambiguities, missing prerequisites, and concrete patches. The check step between spec and code.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Planning</span><span class="tag">LLM</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 1</span>
-          <span>Apr 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/prism" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#4ade80,#7b7ff6)"></span> prism</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Local-first AI code review CLI. Reviews git diffs, commits, ranges, and PRs using Anthropic, OpenAI, Gemini, or Ollama. Emits text, JSON, SARIF, and Markdown — with CI-friendly exit codes and pre-commit hooks.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Review</span><span class="tag">Multi-LLM</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 1</span>
-          <span>Apr 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/RealityCheck" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#f59e0b,#ec6cb9)"></span> realitycheck</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Intent enforcement for agentic coding systems. Verifies that code matches <code>SPEC.md</code> and <code>PLAN.md</code> — and only that. Catches the drift between what was asked for and what the agent actually built.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Agents</span><span class="tag">Verification</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-          <span>Feb 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/clarion" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#22d3ee,#7b7ff6)"></span> clarion</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Evidence-backed documentation for Go repos. Scans code, builds a Fact Model, then generates architecture / API / data-model / runbook docs via LLM — every claim traceable back to source.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Docs</span><span class="tag">Traceability</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 1</span>
-          <span>Mar 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/verifier" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#a78bfa,#4ade80)"></span> verifier</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Spec-driven test-strategy analysis. Reads your specs, plans, and Go code to find the tests you don't have — and scaffolds honest skeletons for the ones that matter.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Testing</span><span class="tag">Specs</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-          <span>Mar 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/atlas" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#60a5fa,#ec6cb9)"></span> atlas</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Builds a structural and semantic index of a source repository in SQLite — designed to give AI coding agents a grounded view of the codebase instead of raw text.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">SQLite</span><span class="tag">Indexing</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-          <span>Apr 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/specBuilder" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#f472b6,#fbbf24)"></span> specBuilder</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Requirements compiler: transforms product ideas into formal, machine-usable specifications for AI coding agents. Uses LLMs as constrained compilers with strict structured outputs — not chatbots.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">LLM</span><span class="tag">Specs</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 3</span>
-          <span>Jan 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/aperture" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#fbbf24,#ec6cb9)"></span> aperture</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Deterministic context planner for coding agents. Scores, budgets, and explains which files to load before the agent runs — so LLM context becomes a designed artifact, not a guess.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Context</span><span class="tag">Agents</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-          <span>Apr 19, 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
-    <a class="fcard" href="https://github.com/dshills/witness" target="_blank" rel="noopener">
-      <div class="fcard-top">
-        <div class="fcard-name"><span class="sq" style="background:linear-gradient(135deg,#94a3b8,#7b7ff6)"></span> witness</div>
-        <span class="pill">Active</span>
-      </div>
-      <p>Terminal-first observability for AI-driven development workflows. The missing "what did the agent actually do?" layer — designed for the command line, not a dashboard.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Observability</span><span class="tag">CLI</span></div>
-      <div class="fcard-foot">
-        <div class="fcard-meta">
-          <span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-          <span>Apr 18, 2026</span>
-        </div>
-        <span class="fcard-link">View repo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-      </div>
-    </a>
-
   </div>
 </section>
 
-<section class="band" id="notable">
-  <div class="section-head">
-    <div>
-      <div class="kicker">Tier 02 · Notable</div>
-      <h2>Adjacent work — agents, data, and the healthcare stack.</h2>
+<section class="section tight" data-filter>
+  <div class="wrap">
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="m10.6 10.6 3.6 3.6"/></svg><input data-q type="search" placeholder="Search 39 repositories…  ( / )" aria-label="Search repositories"></label>
+      <span class="count" data-count data-noun="repositories" aria-live="polite"></span>
     </div>
-    <div class="side">LLM infrastructure, graph tooling, and the HL7 / FHIR libraries from a decade of healthcare IT. Smaller scope than the flagship suite, still worth depending on.</div>
-  </div>
+    <p class="empty" data-empty>Nothing on this sheet matches. Try a broader term, or browse <a href="https://github.com/dshills" target="_blank" rel="noopener" style="border-bottom:1.5px solid var(--blaze)">everything on GitHub</a>.</p>
 
-  <div class="notable">
-
-    <a class="ncard" href="https://github.com/dshills/matter" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq"></span> matter</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
+    <section class="tier" data-group style="padding-top:0">
+      <header class="tier-head">
+        <span class="mono">Tier 01 · Flagship</span>
+        <h2>The agentic coding toolkit.</h2>
+        <p>Ten tools that compose into a complete spec-first workflow for AI-assisted development: specify, plan, scope the context, build, review, verify, document. Listed in the order a change moves through them.</p>
+      </header>
+      <div class="index">
+        <a class="row" data-item href="https://github.com/dshills/specBuilder" target="_blank" rel="noopener">
+          <span class="n">01</span>
+          <span class="name">specBuilder</span>
+          <span class="desc">Requirements compiler: transforms product ideas into formal, machine-usable specifications for AI coding agents. Uses LLMs as constrained compilers with strict structured outputs, not chatbots.</span>
+          <span class="side"><b>Specify</b><span>★ 5 · Jan 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/speccritic" target="_blank" rel="noopener">
+          <span class="n">02</span>
+          <span class="name">speccritic</span>
+          <span class="desc">Evaluates software specifications as formal contracts. Identifies contradictions, hidden assumptions, and missing prerequisites <em>before</em> a line of code is written.</span>
+          <span class="side"><b>Specify</b><span>★ 1 · Oct 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/plancritic" target="_blank" rel="noopener">
+          <span class="n">03</span>
+          <span class="name">plancritic</span>
+          <span class="desc">Reviews implementation plans and returns structured critique: contradictions, ambiguities, missing prerequisites, and concrete patches. The check step between spec and code.</span>
+          <span class="side"><b>Plan</b><span>★ 3 · Oct 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/aperture" target="_blank" rel="noopener">
+          <span class="n">04</span>
+          <span class="name">aperture</span>
+          <span class="desc">Deterministic context planner for coding agents. Scores, budgets, and explains which files to load before the agent runs, so LLM context becomes a designed artifact, not a guess.</span>
+          <span class="side"><b>Context</b><span>Apr 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/atlas" target="_blank" rel="noopener">
+          <span class="n">05</span>
+          <span class="name">atlas</span>
+          <span class="desc">Builds a structural and semantic index of a source repository in SQLite, designed to give AI coding agents a grounded view of the codebase instead of raw text.</span>
+          <span class="side"><b>Context</b><span>Jul 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/witness" target="_blank" rel="noopener">
+          <span class="n">06</span>
+          <span class="name">witness</span>
+          <span class="desc">Terminal-first observability for AI-driven development workflows. The missing “what did the agent actually do?” layer, designed for the command line, not a dashboard.</span>
+          <span class="side"><b>Build</b><span>Apr 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/prism" target="_blank" rel="noopener">
+          <span class="n">07</span>
+          <span class="name">prism</span>
+          <span class="desc">Local-first AI code review CLI. Reviews git diffs, commits, ranges, and PRs using Anthropic, OpenAI, Gemini, or Ollama. Emits text, JSON, SARIF, and Markdown, with CI-friendly exit codes and pre-commit hooks.</span>
+          <span class="side"><b>Review</b><span>★ 5 · Nov 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/RealityCheck" target="_blank" rel="noopener">
+          <span class="n">08</span>
+          <span class="name">realitycheck</span>
+          <span class="desc">Intent enforcement for agentic coding systems. Verifies that code matches <code>SPEC.md</code> and <code>PLAN.md</code>, and only that. Catches the drift between what was asked for and what the agent actually built.</span>
+          <span class="side"><b>Review</b><span>Oct 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/verifier" target="_blank" rel="noopener">
+          <span class="n">09</span>
+          <span class="name">verifier</span>
+          <span class="desc">Spec-driven test-strategy analysis. Reads your specs, plans, and Go code to find the tests you don’t have, and scaffolds honest skeletons for the ones that matter.</span>
+          <span class="side"><b>Verify</b><span>Mar 2026</span></span>
+        </a>
+        <a class="row" data-item href="https://github.com/dshills/clarion" target="_blank" rel="noopener">
+          <span class="n">10</span>
+          <span class="name">clarion</span>
+          <span class="desc">Evidence-backed documentation for Go repos. Scans code, builds a Fact Model, then generates architecture / API / data-model / runbook docs via LLM, with every claim traceable back to source.</span>
+          <span class="side"><b>Document</b><span>★ 1 · Mar 2026</span></span>
+        </a>
       </div>
-      <p>Autonomous AI agent framework — reliable, observable, tool-using agents with safety controls and deterministic testing.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Agents</span></div>
-    </a>
+    </section>
 
-    <a class="ncard" href="https://github.com/dshills/lattice" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq" style="background:linear-gradient(135deg,#ec6cb9,#7b7ff6)"></span> lattice</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
+    <section class="tier" data-group>
+      <header class="tier-head">
+        <span class="mono">Tier 02 · New ground</span>
+        <h2>Off the software map.</h2>
+        <p>What 2026 turned into: the same evidence-first discipline pointed at systems languages, circuit boards, CAD, and a few things built purely because they were interesting.</p>
+      </header>
+      <div class="plots four">
+        <a class="plot" data-item href="https://github.com/dshills/kern" target="_blank" rel="noopener">
+          <div class="top"><span class="name">kern</span><span class="stars"></span></div>
+          <p>An AI-native systems language: compiler, interpreter, LLVM backend, and runtimes. Go-flavoured surface, no garbage collector, and compiler feedback structured for the agents that write the code.</p>
+          <div class="tags"><span>Go</span><span>Language</span><span>LLVM</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/KiCadAI" target="_blank" rel="noopener">
+          <div class="top"><span class="name">KiCadAI</span><span class="stars">★ 7</span></div>
+          <p>AI-assisted KiCad design toolkit. A Go CLI with direct schematic and PCB writers, validation, and pinmap checks, so agents leave evidence instead of unverified boards.</p>
+          <div class="tags"><span>Go</span><span>Hardware</span><span>PCB</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/ELab" target="_blank" rel="noopener">
+          <div class="top"><span class="name">ELab</span><span class="stars"></span></div>
+          <p>A live electronics workbench: schematic drawing, simulation, and a shared command surface for the user and an AI agent.</p>
+          <div class="tags"><span>Go</span><span>Electronics</span><span>Simulation</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/PlainCAD" target="_blank" rel="noopener">
+          <div class="top"><span class="name">PlainCAD</span><span class="stars"></span></div>
+          <p>Browser-first, local-first parametric CAD for mechanical parts. Sketch, model, and export STL with OpenCascade, plus optional AI assistance.</p>
+          <div class="tags"><span>TypeScript</span><span>CAD</span><span>Local-first</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/vellum" target="_blank" rel="noopener">
+          <div class="top"><span class="name">vellum</span><span class="stars"></span></div>
+          <p>A Go-native UI framework with a macOS backend and example applications.</p>
+          <div class="tags"><span>Go</span><span>UI</span><span>macOS</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/patchbay" target="_blank" rel="noopener">
+          <div class="top"><span class="name">patchbay</span><span class="stars"></span></div>
+          <p>Local automation for Stream Deck, developer tools, and laboratory instruments.</p>
+          <div class="tags"><span>Go</span><span>Automation</span><span>Lab</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/Humanity" target="_blank" rel="noopener">
+          <div class="top"><span class="name">Humanity</span><span class="stars"></span></div>
+          <p>A zoomable timeline of humanity, from 300,000 years ago to today, in a single dependency-free HTML file.</p>
+          <div class="tags"><span>HTML</span><span>Visualization</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/Ashenwake" target="_blank" rel="noopener">
+          <div class="top"><span class="name">Ashenwake</span><span class="stars"></span></div>
+          <p>A dark-fantasy isometric action RPG built with Godot and an engine-independent C# simulation.</p>
+          <div class="tags"><span>C#</span><span>Godot</span><span>Game</span></div>
+        </a>
       </div>
-      <p>Graph-based work tracking. Three states, free-form tags, first-class relationships between work items.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Graph</span></div>
-    </a>
+    </section>
 
-    <a class="ncard" href="https://github.com/dshills/langgraph-go" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq" style="background:linear-gradient(135deg,#4ade80,#7b7ff6)"></span> langgraph-go</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 8</span>
+    <section class="tier" data-group>
+      <header class="tier-head">
+        <span class="mono">Tier 03 · Adjacent</span>
+        <h2>Agents, data, and the healthcare stack.</h2>
+        <p>LLM infrastructure, data tooling, and the HL7 / FHIR libraries from a decade of healthcare IT. Smaller scope than the flagship suite, still worth depending on.</p>
+      </header>
+      <div class="plots">
+        <a class="plot" data-item href="https://github.com/dshills/matter" target="_blank" rel="noopener">
+          <div class="top"><span class="name">matter</span><span class="stars"></span></div>
+          <p>Autonomous AI agent framework: reliable, observable, tool-using agents with safety controls and deterministic testing.</p>
+          <div class="tags"><span>Go</span><span>Agents</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/langgraph-go" target="_blank" rel="noopener">
+          <div class="top"><span class="name">langgraph-go</span><span class="stars">★ 8</span></div>
+          <p>Go-native orchestration for stateful, graph-based LLM workflows. Typed state, deterministic replay, checkpointing, and multi-provider adapters.</p>
+          <div class="tags"><span>Go</span><span>LLM</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/EmbeddixDB" target="_blank" rel="noopener">
+          <div class="top"><span class="name">EmbeddixDB</span><span class="stars">★ 19</span></div>
+          <p>High-performance vector database in Go, built around LLM memory use cases.</p>
+          <div class="tags"><span>Go</span><span>Vector DB</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/golevel7" target="_blank" rel="noopener">
+          <div class="top"><span class="name">golevel7</span><span class="stars">★ 33</span></div>
+          <p>The original HL7 v2.x decoder/encoder in Go. Used across healthcare-IT integrations.</p>
+          <div class="tags"><span>Go</span><span>HL7</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/gofhir" target="_blank" rel="noopener">
+          <div class="top"><span class="name">gofhir</span><span class="stars">★ 29</span></div>
+          <p>FHIR client for Go. The interoperability companion to golevel7, for modern healthcare APIs.</p>
+          <div class="tags"><span>Go</span><span>FHIR</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/golevel7v2" target="_blank" rel="noopener">
+          <div class="top"><span class="name">golevel7v2</span><span class="stars">★ 2</span></div>
+          <p>HL7 v2.x parser, encoder, and MLLP network library. Streaming parser, struct marshaling, rule-based validation, ACK/NAK generation.</p>
+          <div class="tags"><span>Go</span><span>Healthcare</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/visDB" target="_blank" rel="noopener">
+          <div class="top"><span class="name">visDB</span><span class="stars">★ 2</span></div>
+          <p>Database visualization tool for PostgreSQL, MySQL, SQLite, SQL Server, and MongoDB. Interactive ERD diagrams with schema introspection.</p>
+          <div class="tags"><span>Go</span><span>ERD</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/cstatline" target="_blank" rel="noopener">
+          <div class="top"><span class="name">cstatline</span><span class="stars"></span></div>
+          <p>Compile-time-configured Claude Code statusline binaries in Go. No jq, no shell, just a single static binary per config.</p>
+          <div class="tags"><span>Go</span><span>Claude Code</span></div>
+        </a>
+        <a class="plot" data-item href="https://github.com/dshills/gocontext-mcp" target="_blank" rel="noopener">
+          <div class="top"><span class="name">gocontext-mcp</span><span class="stars"></span></div>
+          <p>Symbol-aware semantic code search for Go codebases via MCP. Native AST parsing with domain-driven design support.</p>
+          <div class="tags"><span>Go</span><span>MCP</span></div>
+        </a>
       </div>
-      <p>Go-native orchestration for stateful, graph-based LLM workflows. Typed state, deterministic replay, checkpointing, and multi-provider adapters.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">LLM</span></div>
-    </a>
+    </section>
 
-    <a class="ncard" href="https://github.com/dshills/EmbeddixDB" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq" style="background:linear-gradient(135deg,#f59e0b,#ec6cb9)"></span> EmbeddixDB</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 13</span>
+    <section class="tier" data-group>
+      <header class="tier-head">
+        <span class="mono">Tier 04 · Archive</span>
+        <h2>Earlier work worth keeping visible.</h2>
+        <p>A decade of Go experiments: LLM frameworks before the name existed, databases, terminal UIs, and the automation package from 2015 that still has the most stars.</p>
+      </header>
+      <table class="archive">
+        <thead><tr><th>Project</th><th>Description</th><th class="num hide-s">Year</th><th class="num">Stars</th></tr></thead>
+        <tbody>
+          <tr data-item><td><a href="https://github.com/dshills/goauto" target="_blank" rel="noopener">goauto</a></td><td>Go package for building automation tools. The original hit.</td><td class="num hide-s">2015</td><td class="num">★ 264</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/wiggle" target="_blank" rel="noopener">wiggle</a></td><td>Multi-node LLM processing framework, from before “agent framework” was a category.</td><td class="num hide-s">2024</td><td class="num">★ 24</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/termai" target="_blank" rel="noopener">termai</a></td><td>Terminal AI client. An early multi-provider CLI for LLMs.</td><td class="num hide-s">2024</td><td class="num">★ 15</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/second-opinion" target="_blank" rel="noopener">second-opinion</a></td><td>LLM-driven code review MCP server for Git. Predecessor to prism.</td><td class="num hide-s">2025</td><td class="num">★ 12</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/yaggg" target="_blank" rel="noopener">yaggg</a></td><td>Yet Another Go Generic Generator. Early code generation.</td><td class="num hide-s">2015</td><td class="num">★ 11</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/mcp-pr" target="_blank" rel="noopener">mcp-pr</a></td><td>MCP server for AI-powered code review: structured findings, severity, line numbers.</td><td class="num hide-s">2025</td><td class="num">★ 8</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/alas" target="_blank" rel="noopener">alas</a></td><td>Artificial Language for Autonomous Systems. A language designed for machine generation, not humans. Interpreter + LLVM backend.</td><td class="num hide-s">2025</td><td class="num">★ 7</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/QuantaDB" target="_blank" rel="noopener">QuantaDB</a></td><td>SQL database with persistent storage, MVCC transactions, crash recovery, query processing.</td><td class="num hide-s">2025</td><td class="num">★ 2</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/ai-manager" target="_blank" rel="noopener">ai-manager</a></td><td>Unified access to multiple modern LLMs from Go. Pre-MCP, multi-provider.</td><td class="num hide-s">2024</td><td class="num">★ 2</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/RelatixDB" target="_blank" rel="noopener">RelatixDB</a></td><td>High-performance local graph database designed as an MCP tool.</td><td class="num hide-s">2025</td><td class="num">★ 1</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/goterm" target="_blank" rel="noopener">goterm</a></td><td>Go terminal UI library: color, text styling, screen-buffer management.</td><td class="num hide-s">2025</td><td class="num">★ 1</td></tr>
+          <tr data-item><td><a href="https://github.com/dshills/craftMCP" target="_blank" rel="noopener">craftMCP</a></td><td>An MCP client and host implementation.</td><td class="num hide-s">2025</td><td class="num">★ 1</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <aside class="callout reveal">
+      <div>
+        <h2>Building something that needs this kind of care?</h2>
+        <p>The tools are free. The judgment about where they fit in your system, your team, and your delivery process is the consulting. Everything else is on <a href='https://github.com/dshills' target='_blank' rel='noopener' style='border-bottom:1.5px solid var(--blaze)'>GitHub</a>.</p>
       </div>
-      <p>High-performance vector database in Go, built around LLM memory use cases.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Vector DB</span></div>
-    </a>
-
-    <a class="ncard healthcare" href="https://github.com/dshills/golevel7v2" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name healthcare"><span class="sq"></span> golevel7v2</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 2</span>
+      <div class="actions">
+        <a class="btn" href="index.html#contact">Start a conversation <span class="arrow">↗</span></a>
       </div>
-      <p>HL7 v2.x parser, encoder, and MLLP network library. Streaming parser, struct marshaling, rule-based validation, ACK/NAK generation.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Healthcare</span></div>
-    </a>
-
-    <a class="ncard healthcare" href="https://github.com/dshills/golevel7" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name healthcare"><span class="sq"></span> golevel7</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 33</span>
-      </div>
-      <p>The original HL7 v2.x decoder/encoder in Go. Widely used across healthcare-IT integrations since 2022.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">HL7</span></div>
-    </a>
-
-    <a class="ncard healthcare" href="https://github.com/dshills/gofhir" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name healthcare"><span class="sq"></span> gofhir</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 29</span>
-      </div>
-      <p>FHIR client for Go. The interoperability companion to golevel7 — for modern healthcare APIs.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">FHIR</span></div>
-    </a>
-
-    <a class="ncard" href="https://github.com/dshills/visDB" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq" style="background:linear-gradient(135deg,#22d3ee,#7b7ff6)"></span> visDB</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 2</span>
-      </div>
-      <p>Database visualization tool — PostgreSQL, MySQL, SQLite, SQL Server, MongoDB. Interactive ERD diagrams with schema introspection.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">ERD</span></div>
-    </a>
-
-    <a class="ncard" href="https://github.com/dshills/APITester" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq" style="background:linear-gradient(135deg,#a78bfa,#f472b6)"></span> APITester</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-      </div>
-      <p>API testing tool — Go backend, React frontend. Collections, env vars with secret encryption, JWT auth, SSRF protection.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">React</span></div>
-    </a>
-
-    <a class="ncard" href="https://github.com/dshills/cstatline" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq" style="background:linear-gradient(135deg,#fbbf24,#7b7ff6)"></span> cstatline</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-      </div>
-      <p>Compile-time-configured Claude Code statusline binaries in Go — no jq, no shell, just a single static binary per config.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">Claude Code</span></div>
-    </a>
-
-    <a class="ncard" href="https://github.com/dshills/gocontext-mcp" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq" style="background:linear-gradient(135deg,#60a5fa,#7b7ff6)"></span> gocontext-mcp</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-      </div>
-      <p>Symbol-aware semantic code search for Go codebases via MCP. Native AST parsing with domain-driven design support.</p>
-      <div class="tags"><span class="tag">Go</span><span class="tag">MCP</span></div>
-    </a>
-
-    <a class="ncard" href="https://github.com/dshills/EldersCourage" target="_blank" rel="noopener">
-      <div class="ncard-top">
-        <div class="ncard-name"><span class="sq" style="background:linear-gradient(135deg,#f59e0b,#ef4444)"></span> EldersCourage</div>
-        <span class="ncard-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-      </div>
-      <p>Playable Godot ARPG prototype — cursed soul-rings, attunement, loot, echoes — with Go-based content tooling driving the data.</p>
-      <div class="tags"><span class="tag">Godot</span><span class="tag">Go</span><span class="tag">Game</span></div>
-    </a>
-
+    </aside>
   </div>
 </section>
+</main>
 
-<section class="band" id="archive">
-  <div class="section-head">
-    <div>
-      <div class="kicker">Tier 03 · Archive</div>
-      <h2>Earlier work worth keeping visible.</h2>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Hills Consulting, LLC · West Des Moines, Iowa</span>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="projects.html">Open source</a>
+      <a href="writing.html">Writing</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="datum">
+      <span>Datum: production</span>
+      <span>Contour interval: one phase</span>
+      <span>Surveyed by Davin Hills</span>
     </div>
-    <div class="side">A decade of Go experiments — LLM frameworks before the name existed, graph databases, terminal UIs, and the 268-star automation framework from 2015.</div>
   </div>
-
-  <div class="archive" role="table">
-    <div class="arch-head" role="row">
-      <span>Project</span>
-      <span>Description</span>
-      <span>Year</span>
-      <span>Stars</span>
-      <span></span>
-    </div>
-
-    <a class="arch-row" href="https://github.com/dshills/goauto" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>goauto</span>
-      <span class="arch-desc">Go package for building automation tools — the original hit.</span>
-      <span class="arch-meta">2015</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 268</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/wiggle" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>wiggle</span>
-      <span class="arch-desc">Multi-node LLM processing framework — from before "agent framework" was a category.</span>
-      <span class="arch-meta">2024</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 23</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/termai" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>termai</span>
-      <span class="arch-desc">Terminal AI client — early multi-provider CLI for LLMs.</span>
-      <span class="arch-meta">2024</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 15</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/second-opinion" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>second-opinion</span>
-      <span class="arch-desc">LLM-driven code review MCP server for Git — predecessor to prism.</span>
-      <span class="arch-meta">2025</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 12</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/yaggg" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>yaggg</span>
-      <span class="arch-desc">Yet Another Go Generic Generator — early code generation.</span>
-      <span class="arch-meta">2015</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 11</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/alas" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>alas</span>
-      <span class="arch-desc">Artificial Language for Autonomous Systems — a language designed for machine generation, not humans. Interpreter + LLVM backend.</span>
-      <span class="arch-meta">2025</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 6</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/mcp-pr" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>mcp-pr</span>
-      <span class="arch-desc">MCP server for AI-powered code review — structured findings, severity, line numbers.</span>
-      <span class="arch-meta">2025</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 8</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/QuantaDB" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>QuantaDB</span>
-      <span class="arch-desc">SQL database with persistent storage, MVCC transactions, crash recovery, query processing.</span>
-      <span class="arch-meta">2025</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 2</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/RelatixDB" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>RelatixDB</span>
-      <span class="arch-desc">High-performance local graph database designed as an MCP tool.</span>
-      <span class="arch-meta">2025</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 1</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/goterm" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>goterm</span>
-      <span class="arch-desc">Go terminal UI library — color, text styling, screen-buffer management.</span>
-      <span class="arch-meta">2025</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 1</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/gogame" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>gogame</span>
-      <span class="arch-desc">A simple 2D game engine in Go for macOS — arcade-style games and platformers.</span>
-      <span class="arch-meta">2025</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 0</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/craftMCP" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>craftMCP</span>
-      <span class="arch-desc">An MCP client and host implementation.</span>
-      <span class="arch-meta">2025</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 1</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-    <a class="arch-row" href="https://github.com/dshills/ai-manager" target="_blank" rel="noopener" role="row">
-      <span class="arch-name"><span class="dot-sm"></span>ai-manager</span>
-      <span class="arch-desc">Unified access to multiple modern LLMs from Go — pre-MCP, multi-provider.</span>
-      <span class="arch-meta">2024</span>
-      <span class="arch-stars"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg> 2</span>
-      <span class="arch-link">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M10 7h7v7"/></svg></span>
-    </a>
-
-  </div>
-</section>
-
-<section class="final" id="contact">
-  <h3>Building something that needs this kind of care?</h3>
-  <p>I'm currently available for consulting — systems architecture, developer tooling, LLM infrastructure, and fractional CTO engagements.</p>
-  <div class="row">
-    <a class="btn-solid" href="https://github.com/dshills" target="_blank" rel="noopener">
-      All 40+ repos on GitHub
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M10 7h7v7"/></svg>
-    </a>
-    <a class="btn-ghost" href="index.html#contact">Get in touch</a>
-  </div>
-</section>
-
-<footer>
-  <div>© 2026 Davin Hills — Hills Consulting, LLC</div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="writing.html">Articles</a></li>
-    <li><a href="index.html#experience">Experience</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
-  </ul>
 </footer>
 
+<script src="site.js" defer></script>
 </body>
 </html>
